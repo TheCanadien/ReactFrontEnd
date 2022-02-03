@@ -1,0 +1,34 @@
+.Nav{
+    min-height: 10vh;
+    ul{
+        list-style-type: none;
+        justify-content: space-around;
+        display: flex;
+        min-height: 10vh;
+        padding-left: 0.4%;
+        li{
+            width: 32.9vw;
+            line-height: 10vh;
+            font-size: 150%;
+            margin-right: 0.4vw;
+            border-radius: 1.5vh;
+           button{
+            color: lightblue;
+            font-weight: bold;
+            background-color: black;
+            width: 100%;
+            height: 100%;
+            font-size: 120%;
+            border-radius: 1.5vh;
+            }
+        
+           }
+        }
+    }
+
+    .search{
+        left: 50%
+    }
+  
+  
+

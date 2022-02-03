@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import './App.scss';
+import Nav from './Nav';
+import FormFormat from './FormFormat';
+import React, {useState} from 'react';
 
 function App() {
+
+  
+  const [isSearch, setSearch] = useState(false);
+  const [isLogin, setLogin] = useState(false);
+  const [isRegister, setRegister] = useState(false);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Nav setSearch= {setSearch} setLogin={setLogin} setRegister={setRegister}
+       isLogin = {isLogin} isSearch = {isSearch} isRegister = {isRegister}
+      />
+      <FormFormat setSearch = {setSearch} setLogin={setLogin} setRegister={setRegister}
+       isLogin = {isLogin} isSearch = {isSearch} isRegister = {isRegister} />
     </div>
   );
 }
