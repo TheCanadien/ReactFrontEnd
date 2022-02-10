@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import '../User.scss';
 
-const SetUserInfo =()=>{
+const UserInfo =()=>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
 
@@ -36,20 +36,11 @@ const SetUserInfo =()=>{
       };
       const d = new Date(userData.birthday);
 
-
-
-
-
-
     const [weight, setWeight] = useState(null);
     const [birthdate, setBirthdate] = useState(null);
     const [height, setHeight] = useState(null);
     const [priv, setPriv] = useState(true);
     const [edit, setEdit] = useState(false);
-
-   
-
-
 
     const submitHandler = (e)=>{
       e.preventDefault();
@@ -118,20 +109,6 @@ return(
        <div>Birthdate: {d.toDateString().substring(3)}</div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <div className= "editdiv">
 <button onClick= {editForm}>Edit </button>
 </div>
@@ -165,4 +142,4 @@ return(
 )
 }
 
-export default SetUserInfo;
+export default UserInfo;

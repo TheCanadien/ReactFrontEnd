@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import GetUserInfo from './GetUserInfo';
-import SetUserInfo from './SetUserInfo';
+import SetUserInfo from './UserInfo';
 
 const User = () =>{
 
@@ -12,7 +11,6 @@ const User = () =>{
 
     return (
         <div>
-        <GetUserInfo/>
         <SetUserInfo/>
    
         </div>
