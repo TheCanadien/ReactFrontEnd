@@ -1,0 +1,43 @@
+.makeInvisible{
+    display : none;
+
+}
+
+div.user{
+    font-weight: bold;
+    height: 20vh;
+    text-align: left;
+    padding-left: 2.5vw;
+    padding-top: 5vh;
+}
+
+.editText{
+    text-align: left;
+    padding-left: 2.5vw;
+}
+
+.editdiv{
+    padding-left: 4vw;
+}
+
+.infodiv{
+    padding-left: 4vw;
+}
+
+.infosub{
+    background-color:rgb(0, 0, 0);
+    color: lightblue;
+    height: 5vh;
+    width: 10vw;
+    border-radius: 1.0vh;
+    font-weight: bold;
+}
+
+.checkdiv{
+    padding-left: 7vw;
+    padding-bottom: 1vh;
+}
+
+label{
+    color:black;
+}

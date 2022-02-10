@@ -1,25 +1,27 @@
 import './App.css';
-import './App.scss';
-import Nav from './Nav';
-import FormFormat from './FormFormat';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './Components/Home'
+import User from './Components/User'
 import React, {useState} from 'react';
 
 function App() {
 
-  
-  const [isSearch, setSearch] = useState(false);
-  const [isLogin, setLogin] = useState(false);
-  const [isRegister, setRegister] = useState(false);
-
+  const [isVisible, setVisible] = useState(false);
+  const [userName, setUserName] =useState('');
 
   return (
+
     <div className="App">
-      <Nav setSearch= {setSearch} setLogin={setLogin} setRegister={setRegister}
-       isLogin = {isLogin} isSearch = {isSearch} isRegister = {isRegister}
-      />
-      <FormFormat setSearch = {setSearch} setLogin={setLogin} setRegister={setRegister}
-       isLogin = {isLogin} isSearch = {isSearch} isRegister = {isRegister} />
+   <Router>
+   <Routes>
+   <Route index element={<Home isVisible={isVisible} setVisible={setVisible}
+    userName = {userName} setUserName={setUserName}/>} />
+   <Route path="user/:id" element={<User/>} />
+   </Routes>
+   </Router>
+   
     </div>
+    
   );
 }
 
