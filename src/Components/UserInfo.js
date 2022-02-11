@@ -2,30 +2,26 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import '../User.scss';
 
-const UserInfo =()=>{
+const UserInfo =({userData, setUserData})=>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
 
-  const [userData, setUserData] = useState({});
+
   const [userData1, setUserData1] = useState({});
 
-  useEffect(()=>{
-    getStuff(); 
-
-     },[]);
-
+ 
      useEffect(()=>{
       getStuff(); 
   
        },[]);
   
-         const getStuff =() =>{
-         axios.get('http://18.213.166.93:3000/user', { headers:{
+         const getStuff = async () =>{
+         await axios.get('http://18.213.166.93:3000/user', { headers:{
           "content-type": "application/json",
           "Authorization" : atoken
         }} )
           .then(res => {
-           console.log(res);
+         //  console.log(res);
           setUserData(res.data);
   
          })
@@ -71,7 +67,7 @@ const UserInfo =()=>{
            console.log(error.response);
        })
         setEdit(false);
-        getStuff();
+         getStuff();
 
      }
 ////////////////////////////////////////////////////////
@@ -107,35 +103,36 @@ return(
        <div>Height: {userData.height} inches</div>
        <div>Weight: {userData.weight} lbs </div>
        <div>Birthdate: {d.toDateString().substring(3)}</div>
+       <div>BMI: {((userData.weight/userData.height**2)*703).toFixed(2)}</div> 
         </div>
 
   <div className= "editdiv">
 <button onClick= {editForm}>Edit </button>
 </div>
-<form className = {edit? "editVisible" : "makeInvisible"} >
+<form className = {edit? "editVisible" : "invisible"} >
     <label> Birthdate:
    </label>   
-    <input type='date' onChange={birthdateHandler}>
+    <input type='date' onChange={birthdateHandler} disabled= {edit? "" : "disabled"}>
     </input>
 
     <label> Bodyweight:
    </label>   
-    <input onChange={bodyweightHandler} type='number'  step="0.5">
+    <input onChange={bodyweightHandler} type='number'  step="0.5" disabled= {edit? "" : "disabled"}>
     </input>
     <label>
         Height:
    </label>   
-    <input onChange={heightHandler}type='number' step='0.5'>
+    <input onChange={heightHandler}type='number' step='0.5' disabled= {edit? "" : "disabled"}>
     </input>
 <div className = "checkdiv">
 <label>
  Public profile:
    </label>   
-    <input onChange={privHandler} type='checkbox' defaultChecked>
+    <input onChange={privHandler} type='checkbox' defaultChecked  disabled= {edit? "" : "disabled"}>
     </input>
     </div>
      <div className="infodiv">
-    <input className="infosub" onClick={submitHandler} type="submit" value="Submit" />
+    <input className="infosub" onClick={submitHandler} type="submit" value="Submit"  disabled= {edit? "" : "disabled"} />
     </div>
    </form>
    </div>

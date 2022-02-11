@@ -1,6 +1,5 @@
-.makeInvisible{
-    display : none;
-
+.invisible{
+    opacity: 0;
 }
 
 div.user{
@@ -41,3 +40,60 @@ div.user{
 label{
     color:black;
 }
+
+.mealclass{
+    padding-top: 2vh;
+    display: flex;
+    justify-content: center;
+}
+
+ .inputdate{
+   height: 4vh;
+   border-radius: 1.0vh;
+   width: 9vw;
+}
+.inputcalories{
+    border-radius: 1.0vh;
+   width: 4vw;  
+}
+
+.inputmeals{
+    width: 20vw;
+    border-radius: 1.0vh;
+}
+
+button.mealssubbutton{
+    margin-left: 2vw;
+    margin-top: 0;
+ 
+}
+
+[name=meallabel]{
+    padding-right: 1vw;
+    padding-left:1vw;
+    padding-top: 1vh;
+}
+
+[name=callabel]{
+    padding-right: 1vw;
+    padding-left: 1vw;
+    padding-top: 1vh;
+}
+
+[name=date]{
+    padding-top: 1vh;
+    padding-right: 1vw;
+
+
+}
+
+.userpage{
+    display: flex;
+    align-items: center;
+
+}
+/*
+.pickdate{
+    display: block;
+}
+*/

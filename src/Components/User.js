@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
-import SetUserInfo from './UserInfo';
+import UserInfo from './UserInfo';
+import Meals from './Meals';
+import '../User.scss';
 
 const User = () =>{
 
-
-
+   const [meals, setMeals] = useState([]);
+   const [userData, setUserData] = useState({});
 
 
 
 
     return (
-        <div>
-        <SetUserInfo/>
-   
+        <div className="userpage">
+        <UserInfo userData={userData} setUserData={setUserData}/>
+        <Meals meals={meals} setMeals={setMeals} userData={userData} setUserData={setUserData}/>
         </div>
     )
 }
