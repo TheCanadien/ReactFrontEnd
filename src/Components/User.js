@@ -2,19 +2,37 @@ import React, {useState} from 'react';
 import UserInfo from './UserInfo';
 import Meals from './Meals';
 import '../User.scss';
+//import UpdateMeals from './UpdateMeals';
 
 const User = () =>{
 
-   const [meals, setMeals] = useState([]);
-   const [userData, setUserData] = useState({});
-
-
-
+  
+///////////////////////////////////////////////////////////////////////
+const createDateString = () =>{
+    const today = new Date(Date.now());
+    let num = today.getMonth() + 1;
+    let month = num.toString();
+    let adate = today.getDate().toString();
+    const year = today.getFullYear().toString();
+    if(adate.length === 1){
+        adate = "0" + adate;
+    }
+    if(month.length ===1){
+        month = "0" + month;
+    }
+    return year + "-" + month + "-" + adate;
+};
+///////////////////////////////////////////////
+const [userData, setUserData] = useState({});
+const todaysdate = createDateString();
+const [date, setDate] = useState(todaysdate);
+//////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className="userpage">
-        <UserInfo userData={userData} setUserData={setUserData}/>
-        <Meals meals={meals} setMeals={setMeals} userData={userData} setUserData={setUserData}/>
+       <UserInfo userData={userData} setUserData={setUserData}/>
+        <Meals  userData={userData} setUserData={setUserData}  date={date} setDate={setDate}/>
+      {/*  <UpdateMeals userData={userData} setUserData={setUserData} date={date} setDate={setDate}/>*/}
         </div>
     )
 }
