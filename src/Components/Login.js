@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import '../Home.scss';
-import { HashLink } from 'react-router-hash-link';
+//import { HashLink } from 'react-router-hash-link';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 const Login = ({isVisible, setVisible, userName, setUserName}) =>{
 
  const [password, setPassword] = useState('');
  const [name, setName] = useState('');
-
+ let navigate = useNavigate();
 
 
 
@@ -39,18 +40,15 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
         .catch(error => {
             console.log(error.response);
         })
-      // localStorage.setItem('butter', 'toast'); 
     setUserName(name);
     setPassword('');
     setName(''); 
+ 
+    navigate(`/user/${name}`);
     
-    
-    ///////////////////////////////////////////////////////////////
-    
-    
-    
-  
   }
+
+
   const makeVisible= (e) =>{
     setVisible(!isVisible);
     console.log('shit');

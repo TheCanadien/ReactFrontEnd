@@ -10,6 +10,7 @@ const Meals = ({userData, setUserData, date, setDate})=>{
     const [fooditem, setFoodItem] = useState([]);
     const [mealsexist, setMealsExist] = useState(false);
     const [dateChanged, setDateChanged] = useState(date);
+  //  const [editfooditem, setEditFoodItem] = useState([]);
 
 
     useEffect(()=>{
@@ -17,12 +18,8 @@ const Meals = ({userData, setUserData, date, setDate})=>{
       getMeals();
           },[userData]);
 
-
-////////////////////////////////////////////////////////////////////////////////////////
 const getMeals = async () =>{
    console.log('calling getMeals');
-  //console.log(userData.name);
-  //  axios.get(`http://18.213.166.93:3000/entry/${date}/${userData.username}`,{ headers:{
     await axios.get(`http://18.213.166.93:3000/entry/${date}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken
@@ -37,7 +34,21 @@ const getMeals = async () =>{
       
      }
      else{
-    setFoodItem(res.data.food_item); 
+    const fooddata = res.data.food_item;
+    fooddata.map((item, index) =>{
+     
+     item.edit=false;  
+     if(index < fooddata.length-1){
+     return  item.deletable=false; 
+     }
+     else{
+      return item.deletable=true; 
+     }
+    })
+
+    //setFoodItem(res.data.food_item);
+    setFoodItem(fooddata);
+
     //console.log(res);
     setMealsExist(true);
      setEntryInfo(res.data)
@@ -47,10 +58,6 @@ const getMeals = async () =>{
       console.log(error.response);
   })
 };
-
-    // fooditem.map(item=>
-      //console.log(item));
-
      
       const datesubmitHandler =(e) =>{
         e.preventDefault();
@@ -62,8 +69,15 @@ const getMeals = async () =>{
       console.log('date is changing');
       setDate(e.target.value);
   }
-////////////////////////////////////////////////////////////////////
-//const [mealInfo, setMealInfo] = useState({food_description: ""| String, calories: null | Number, weight: null | Number, meal_number: null | Number});
+
+ //fooditem.forEach(element => console.log(element));
+
+
+
+
+
+
+
 
 const [calories, setCalories] = useState(0);
 
@@ -78,15 +92,11 @@ const [weight, setWeight]  = useState(0);
    setWeight(e.target.value);
  }
 
-const [mealnumber, setMealNumber] = useState(1);
-
 const [foodDescription, setFoodDescription] = useState('');
 const inputFoodHandler = (e) =>{
  console.log(e.target.value);
  setFoodDescription(e.target.value);
 }
-
-////////////////////////////////////////////////////////////////
 
 const addmeal =
 {
@@ -99,8 +109,6 @@ const addmeal =
  "calories" : calories}
  ]
 }
-/////////////////////////////////////////////////////////
-
 
 const submitHandler =(e) =>{
   e.preventDefault();
@@ -113,7 +121,19 @@ const submitHandler =(e) =>{
     .then(res => {
     console.log(res.data);
     setMealsExist(true);
-    setFoodItem(res.data.food_item);
+
+    const foodinfo = res.data.food_item;
+    foodinfo[0].edit = false;
+    foodinfo[0].deletable = false;
+   // console.log(foodinfo);
+
+
+   //setFoodItem(res.data.food_item);
+    setFoodItem(foodinfo);
+
+    setCalories(0);
+    setFoodDescription('');
+    setWeight(0);
    })
    .catch(error => {
        console.log(error.response);
@@ -131,7 +151,29 @@ const submitHandler =(e) =>{
         console.log(res.data);
         console.log(nextmealnumber-1);
         console.log('does exist');
-       setFoodItem([...fooditem, res.data.food_item[nextmealnumber-1]]);
+
+        ///////////////////////////////////////////////////////////
+        const fooddata =  res.data.food_item[nextmealnumber-1]
+        
+         fooddata.edit = false;
+         fooddata.deletable = true;
+      console.log(fooddata);
+       let array = fooditem.map(item=>{
+         return {...item, deletable: false}
+       })
+        setFoodItem([...array, fooddata]);
+
+
+ //  setFoodItem([...fooditem, fooddata]);
+
+   
+      
+
+      console.log('here');
+
+
+
+      
        setCalories(0);
        setFoodDescription('');
        setWeight(0);
@@ -144,6 +186,79 @@ const submitHandler =(e) =>{
     fooditem.map(item=>
       console.log(item));
   }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+const [editCal, setEditCal] = useState(0);
+const editCaloriesHandler = (e) =>{
+ console.log(e.target.value);
+ setEditCal(e.target.value);
+} 
+const [editFood, setEditFood] = useState('');
+const editFoodHandler = (e) =>{
+  console.log(e.target.value);
+  setEditFood(e.target.value);
+}
+
+
+
+
+const foodEditHandler = (e, itemid) =>{
+  e.preventDefault();
+ // console.log(itemid);
+  //setIsSelected(!isSelected);
+  //console.log(isSelected); 
+   setFoodItem(fooditem.map(item=> {
+    if(item._id === itemid){
+      return {...item, edit: !item.edit}
+    } 
+    return item;
+    }))
+
+}
+
+const submitEditHandler = (e, item) =>{
+ e.preventDefault();
+
+
+ console.log(item);
+const updated = {
+  "food_item":[{
+ "calories" : editCal,
+ "food_description" : editFood,
+ "_id" : item._id,
+ "meal_number": item.meal_number
+  }]
+}
+console.log(updated);
+
+ axios.patch(`http://18.213.166.93:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
+  "content-type": "application/json",
+  "Authorization" : atoken
+}} )
+  .then(res => {
+    console.log(res);
+    ///////////////////////////
+
+    setFoodItem(fooditem.map(items=> {
+      if(items._id === item._id){
+        return {...items, calories: editCal, food_description: editFood, edit:false}
+      } 
+      return items;
+      }))
+      setEditCal(0);
+      setEditFood('');
+ })
+ .catch(error => {
+     console.log(error.response);
+ })
+
+}
+
+
+
 
 
 
@@ -162,7 +277,28 @@ const submitHandler =(e) =>{
                <div>{entryInfo.weight}  
        <div >
            {fooditem.map(item=>(
-           <div key={item._id}> {item.food_description} {item.meal_number} {item.calories}</div>
+
+           <div  key={item._id} >
+           {!item.edit? `${item.food_description} ${item.meal_number} ${item.calories}`: 
+<div>
+  <p> {item.food_description} {item.meal_number} {item.calories}   </p>
+<form>   
+<label name="callabel">
+    Calories 
+     </label> 
+  <input type="number"  className="inputcalories" onChange={editCaloriesHandler} min="0"></input>
+  <label name="fooddescription">
+  FoodDescription:
+     </label> 
+  <input type="text"  className="MealType" onChange={editFoodHandler}></input>   
+  <button onClick={(e)=>submitEditHandler(e, item)} className="mealssubbutton" >Submit</button>
+</form>
+</div>
+
+
+           }
+           <button onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>
+           </div>
               )) }
            </div>  </div>
            :<div></div>
@@ -183,8 +319,6 @@ const submitHandler =(e) =>{
             </label> 
          <input type="number" value={weight} className="weight" onChange={inputWeightHandler} min="0" step="0.5"></input>   
          <button onClick={submitHandler} className="mealssubbutton" >Submit</button>
-
-
       </form>
 
 
