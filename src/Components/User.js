@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import UserInfo from './UserInfo';
 import Meals from './Meals';
 import '../User.scss';
+import SearchFoods from './SearchFoods';
 //import UpdateMeals from './UpdateMeals';
 
 const User = () =>{
@@ -32,6 +33,7 @@ const [date, setDate] = useState(todaysdate);
         <div className="userpage">
        <UserInfo userData={userData} setUserData={setUserData}/>
         <Meals  userData={userData} setUserData={setUserData}  date={date} setDate={setDate}/>
+        <div><SearchFoods/></div>
         </div>
     )
 }

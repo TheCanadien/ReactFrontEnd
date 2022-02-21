@@ -124,7 +124,7 @@ const submitHandler =(e) =>{
 
     const foodinfo = res.data.food_item;
     foodinfo[0].edit = false;
-    foodinfo[0].deletable = false;
+    foodinfo[0].deletable = true;
    // console.log(foodinfo);
 
 
@@ -163,17 +163,8 @@ const submitHandler =(e) =>{
        })
         setFoodItem([...array, fooddata]);
 
-
- //  setFoodItem([...fooditem, fooddata]);
-
-   
-      
-
       console.log('here');
-
-
-
-      
+   
        setCalories(0);
        setFoodDescription('');
        setWeight(0);
@@ -257,6 +248,76 @@ console.log(updated);
 
 }
 
+const deleteFoodHandler = (e, item) =>{
+  console.log(item);
+ e.preventDefault();
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
+if(fooditem.length >1){
+axios.patch(`http://18.213.166.93:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"dummy": "dummy"}, { headers:{
+  "content-type": "application/json",
+  "Authorization" : atoken
+}} )
+  .then(res => {
+    console.log(res);
+    //console.log(atoken);
+    ///////////////////////////
+  
+   let array = fooditem.map((items, index)=>{
+    if(index === fooditem.length-2){
+      return {...items, deletable:true}
+    }
+    return items
+    ;
+   })
+   array.pop();
+   setFoodItem(array);
+
+
+  ///////////////////////////
+ })
+ .catch(error => {
+     console.log(error.response);
+ })
+}
+if(fooditem.length ===1){
+  axios.delete(`http://18.213.166.93:3000/entry/${dateChanged}/${userData.username}`, { headers:{
+    "content-type": "application/json",
+    "Authorization" : atoken
+  }} )
+    .then(res => {
+      console.log(res);
+     // console.log(atoken);
+      ///////////////////////////
+    
+     let array = fooditem;
+     array.pop();
+     setFoodItem(array);
+     setMealsExist(false);
+  
+    ///////////////////////////
+   })
+   .catch(error => {
+       console.log(error.response);
+   })
+  }
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
 
 
 
@@ -298,6 +359,7 @@ console.log(updated);
 
            }
            <button onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>
+           <button className={item.deletable? "" : "nodelete"} onClick={(e) => deleteFoodHandler(e, item)}>delete</button>
            </div>
               )) }
            </div>  </div>
