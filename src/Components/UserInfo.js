@@ -107,25 +107,25 @@ return(
         </div>
 
   <div className= "editdiv">
-<button onClick= {editForm}>Edit </button>
+<button name="editbutton" onClick= {editForm}>Edit </button>
 </div>
 <form className = {edit? "editVisible" : "invisible"} >
     <label> Birthdate:
    </label>   
-    <input type='date' onChange={birthdateHandler} disabled= {edit? "" : "disabled"}>
+    <input className="birthdateinput" type='date' onChange={birthdateHandler} disabled= {edit? "" : "disabled"}>
     </input>
 
     <label> Bodyweight:
    </label>   
-    <input onChange={bodyweightHandler} type='number'  step="0.5" disabled= {edit? "" : "disabled"}>
+    <input className="weightinput" onChange={bodyweightHandler} type='number'  step="0.5" disabled= {edit? "" : "disabled"}>
     </input>
     <label>
         Height:
    </label>   
-    <input onChange={heightHandler}type='number' step='0.5' disabled= {edit? "" : "disabled"}>
+    <input className="heightinput" onChange={heightHandler}type='number' step='0.5' disabled= {edit? "" : "disabled"}>
     </input>
 <div className = "checkdiv">
-<label>
+<label name="profile">
  Public profile:
    </label>   
     <input onChange={privHandler} type='checkbox' defaultChecked  disabled= {edit? "" : "disabled"}>

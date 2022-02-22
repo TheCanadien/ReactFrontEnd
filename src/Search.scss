@@ -10,4 +10,30 @@
     list-style: none;
 }
 
+.searchFoods{
+    display:block;
+    text-align: left;
+}
 
+.foodsearch{
+    width: 25vw;
+    height: 4vh;
+    border-radius: 1vh;
+}
+
+.searchFoodLabel{
+    padding-top: 5vh;
+    padding-bottom: 1vh;
+    font-size: 5;
+
+}
+
+.searchsub{
+  margin-right: 1vw;
+  margin-left: 2vw;
+}
+
+.leftside{
+    padding-right:10vw;
+    padding-left:5vw;
+}

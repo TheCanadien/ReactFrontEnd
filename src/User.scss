@@ -1,22 +1,36 @@
 .invisible{
     opacity: 0;
+    padding-right: 1vw;
 }
 
 div.user{
     font-weight: bold;
-    height: 20vh;
     text-align: left;
-    padding-left: 2.5vw;
     padding-top: 5vh;
+    font-size: 2.5vh;
+    line-height: 4vh;
 }
 
 .editText{
-    text-align: left;
-    padding-left: 2.5vw;
+    line-height: 3vh;
+    display: flex;
+    height: 35vh;
+    background-color: lightblue;
+    border: 0.5vh solid lightskyblue;
+    justify-content: flex-end;
+
+
+    -webkit-box-shadow: 5px 5px 15px 5px #000000; 
+box-shadow: 5px 5px 15px 5px #000000;
+
+
+
+
 }
 
 .editdiv{
-    padding-left: 4vw;
+   // padding-left: 4vw;
+   padding-top: 4vh;
 }
 
 .infodiv{
@@ -27,14 +41,10 @@ div.user{
     background-color:rgb(0, 0, 0);
     color: lightblue;
     height: 5vh;
-    width: 10vw;
+    width: 7vw;
     border-radius: 1.0vh;
     font-weight: bold;
-}
-
-.checkdiv{
-    padding-left: 7vw;
-    padding-bottom: 1vh;
+    margin-right: 3vw;
 }
 
 label{
@@ -50,12 +60,9 @@ label{
  .inputdate{
    height: 4vh;
    border-radius: 1.0vh;
-   width: 9vw;
+   width: 14vw;
 }
-.inputcalories{
-    border-radius: 1.0vh;
-   width: 4vw;  
-}
+
 
 .inputmeals{
     width: 20vw;
@@ -63,7 +70,6 @@ label{
 }
 
 button.mealssubbutton{
-    margin-left: 2vw;
     margin-top: 0;
  
 }
@@ -74,11 +80,6 @@ button.mealssubbutton{
     padding-top: 1vh;
 }
 
-[name=callabel]{
-    padding-right: 1vw;
-    padding-left: 1vw;
-    padding-top: 1vh;
-}
 
 [name=date]{
     padding-top: 1vh;
@@ -88,8 +89,9 @@ button.mealssubbutton{
 }
 
 .userpage{
-    display: flex;
+    display: block;
     align-items: center;
+    justify-content: space-around;
 
 }
 /*
@@ -99,4 +101,41 @@ button.mealssubbutton{
 */
 .disappear{
     display:none;
+}
+
+.meals{
+    display: flex;
+ 
+}
+
+.fooddiv{
+    display: flex;
+    justify-content: space-around;
+}
+
+[name=editbutton]{
+    width: 4vw;
+    margin-left: 1vw;
+    margin-top: 10vh;
+}
+
+.editVisible{
+    padding-top: 2vh;
+    padding-right: 1vw;
+}
+
+.heightinput{
+    border-radius: 0.5vh;
+    width: 6vw;
+}
+
+.weightinput{
+    border-radius: 0.5vh;
+    width: 6vw;
+}
+
+.birthdateinput{
+    border-radius: 0.5vh;
+    width: 13vw;
+    height: 3vh;
 }

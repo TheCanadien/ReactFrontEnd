@@ -99,14 +99,15 @@ const submitGramsHandler = (e)=>{
 
 
     return(
-        <div>
-            <form id="foodForm">
-                <label>Search for Food info:</label>
-                <input value={searchFood} type="text" onChange={searchFoodsHandler}></input>
-                <button type="submit" onClick={submitHandler}>Submit</button>
+        <div className="searchFoods">
+            <form  id={fooddetails.food_type}>
+                <label className="searchFoodLabel"><h1>Search for Food info:</h1></label>
+                <input className="foodsearch" value={searchFood} type="text" onChange={searchFoodsHandler}></input>
+                <div>
+                <button className="searchsub" type="submit" onClick={submitHandler}>Submit</button>
                 <button onClick={clearResultsHandler}>clear</button>
+                </div>
             </form>
-            <div></div>
           {selected? <div>
             <h3>Food Type:&nbsp; {fooddetails.food_type}</h3>
            <label>Change quantity</label> 
@@ -132,7 +133,7 @@ const submitGramsHandler = (e)=>{
             <ul className="foundFoods">
         {foundFoods.map(item =>(
            <li  key={item.id}className ="foodsList"> 
-          <HashLink onClick={(e)=>clickHandler(e,item)} className='foodlinks' to="#foodForm">
+          <HashLink onClick={(e)=>clickHandler(e,item)} className='foodlinks' to={`#${fooddetails.food_type}`}>
           {item.food_type}
           </HashLink>
           </li>

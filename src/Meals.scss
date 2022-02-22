@@ -1,0 +1,243 @@
+.meals{
+    display:block;
+    padding-right: 10vw;
+}
+
+.mealdetails{
+    display: flex;
+    padding-right: 0.15vw;
+    border-radius: 3vh;
+    border: 0.25vh solid black;
+    height: 15vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    background-color: lightblue;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    -webkit-box-shadow: 16px 14px 15px 5px #000000; 
+    box-shadow: 16px 14px 15px 5px #000000;
+}
+
+button.foodeditbutton{
+ width: 4vw;
+
+ background-image: linear-gradient(
+    45deg,
+    hsl(240deg 75% 25%) 0%,
+    hsl(219deg 100% 28%) 11%,
+    hsl(213deg 100% 33%) 22%,
+    hsl(207deg 100% 36%) 33%,
+    hsl(200deg 100% 37%) 44%,
+    hsl(192deg 100% 37%) 56%,
+    hsl(183deg 100% 35%) 67%,
+    hsl(172deg 100% 38%) 78%,
+    hsl(163deg 100% 42%) 89%,
+    hsl(132deg 72% 69%) 100%
+  );
+ color:white;
+ margin-bottom: 3vh;
+ margin-left: 5vw;
+}
+
+.deletefoodbutton{
+    width: 4vw;
+    color: white;
+    background-image: linear-gradient(
+        45deg,
+        hsl(350deg 100% 37%) 0%,
+        hsl(353deg 87% 35%) 11%,
+        hsl(356deg 78% 32%) 22%,
+        hsl(358deg 71% 29%) 33%,
+        hsl(360deg 65% 25%) 44%,
+        hsl(2deg 63% 20%) 56%,
+        hsl(4deg 60% 16%) 67%,
+        hsl(9deg 59% 11%) 78%,
+        hsl(12deg 64% 7%) 89%,
+        hsl(0deg 0% 0%) 100%
+      );
+
+    justify-items: end;
+    font-weight: bold;
+    margin-right: .15vw;
+    margin-bottom: 3vh;
+}
+
+.nodelete{
+    display:none;
+}
+
+[name=mealdata]{
+    width: 30vw;
+    overflow-wrap: break-word;
+    padding-left: 10vw;
+    font-weight:bold;
+   
+}
+
+[name=editdiv]{
+    display: flex;
+}
+.subedditbutton{
+    width:4vw;
+    margin-top: 4.8vh;
+   // margin-right:0.15vw;
+   // margin-left:0.15vw;
+    color: white;
+    background-image: linear-gradient(
+        45deg,
+        hsl(101deg 100% 37%) 0%,
+        hsl(103deg 81% 32%) 10%,
+        hsl(103deg 69% 26%) 20%,
+        hsl(103deg 58% 18%) 30%,
+        hsl(100deg 45% 11%) 40%,
+        hsl(0deg 0% 0%) 50%,
+        hsl(104deg 43% 13%) 60%,
+        hsl(106deg 55% 23%) 70%,
+        hsl(107deg 64% 33%) 80%,
+        hsl(107deg 71% 43%) 90%,
+        hsl(107deg 88% 53%) 100%
+      );
+      margin-left: 6vw;
+    
+}
+
+[name=editform]{
+    display:flex;
+    justify-content: space-between;
+}
+
+
+[name=calorieseditlabel]{
+
+    font-weight: bold;
+    height:4vh;
+    padding-right: 0.5vw;
+    padding-left: 3.5vw;
+    margin-top: 1.5vh;
+}
+
+[name=foodeditdescription]{
+    font-weight: bold;
+    height: 4vh;
+    padding-right: 0.5vw;
+    padding-left: 0.5vw;
+    margin-top: 1.5vh;
+}
+
+.MealType{
+    border-radius: 1vh;
+    height:4vh;
+    width: 23vw;
+    margin-right: 1vw;
+    margin-top: 1.5vh;
+    
+}
+
+input.inputeditcalories{
+    border-radius: 1.0vh;
+   width: 5vw;
+   height: 4vh;
+   margin-left: 4vw;
+
+   
+}
+
+.entrydiv{
+    width:54vw;
+}
+
+.foodeditclose{
+    margin-left: 1vw;
+    width: 3vw;
+    margin-right:1vw;
+}
+
+[name=hidebutton]{
+    display:none;
+}
+
+[name=visible]{
+    margin-right:10vw;
+}
+
+[name=closebutton]{
+    width: 4vw;
+    color: white;
+    margin-right: .14vw;
+    margin-left: .2vw;
+    background-image: linear-gradient(
+        140deg,
+        hsl(0deg 0% 0%) 1%,
+        hsl(0deg 0% 0%) 47%,
+        hsl(30deg 0% 54%) 51%,
+        hsl(30deg 6% 93%) 50%,
+        hsl(30deg 0% 54%) 49%,
+        hsl(0deg 0% 0%) 53%,
+        hsl(0deg 0% 0%) 99%
+      );
+      margin-top: 4.8vh;
+}
+
+.inputcalories{
+    border-radius: 1vh;
+    height: 4vh;
+    width:5vw;
+   align-items: left;
+}
+
+[name=foodsubform]{
+    text-align: left;
+    line-height: 2vh;
+}
+
+[name=callabel]{
+    font-weight: bold;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+[name=fooddescription]{
+    padding-top: 1.5vh;
+    font-weight: bold;
+}
+
+[name=mealp]{
+    font-weight: bolder;
+}
+
+.weight{
+    height: 4vh;
+    width: 10vw;
+    border-radius: 1vh;
+ 
+}
+
+[name=currentweight]{
+    padding-top: 1vh;
+    font-weight: bold;
+}
+
+.mealbutton{
+    width: 5vw;
+    margin-top: 0;
+    margin-left: 1vw;
+}
+
+.editmeal{
+    height: 4vh;
+    border-radius: 1vh;
+    width: 20vw;
+    margin-left: 5vw;
+    margin-bottom: 4vh;
+}
+
+.weightsbutton{
+    margin-top:0;
+    margin-left: 1vw;
+}
+
+.changeDate{
+    margin-left: 1vw;
+}
+

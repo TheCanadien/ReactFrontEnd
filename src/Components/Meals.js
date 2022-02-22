@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import '../Meals.scss'
+import SearchFoods from './SearchFoods';
+
 
 const Meals = ({userData, setUserData, date, setDate})=>{
 
@@ -11,6 +14,8 @@ const Meals = ({userData, setUserData, date, setDate})=>{
     const [mealsexist, setMealsExist] = useState(false);
     const [dateChanged, setDateChanged] = useState(date);
   //  const [editfooditem, setEditFoodItem] = useState([]);
+   const [dailyWeight, setDailyWeight] = useState(0);
+
 
 
     useEffect(()=>{
@@ -48,7 +53,7 @@ const getMeals = async () =>{
 
     //setFoodItem(res.data.food_item);
     setFoodItem(fooddata);
-
+    setDailyWeight(res.data.weight);
     //console.log(res);
     setMealsExist(true);
      setEntryInfo(res.data)
@@ -102,7 +107,6 @@ const addmeal =
 {
 "user_name": userData.username,
  "date": dateChanged,
- "weight": weight,
  "food_item" : [{
  "meal_number" : "1",
  "food_description" : foodDescription,
@@ -167,7 +171,6 @@ const submitHandler =(e) =>{
    
        setCalories(0);
        setFoodDescription('');
-       setWeight(0);
        })
        .catch(error => {
            console.log(error.response);
@@ -304,84 +307,107 @@ if(fooditem.length ===1){
    })
   }
 
-
-
-
-
-
-
-
-
 }
 
 
+const submitWeightHandler = (e)=>{
+  e.preventDefault();
 
+  const addWeight = {"weight" : weight}
+  console.log(addWeight);
 
-
-
-
-
-
-
-
+  axios.patch(`http://18.213.166.93:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
+    "content-type": "application/json",
+    "Authorization" : atoken
+  }} )
+    .then(res => {
+    console.log(res);
+    setDailyWeight(weight);
+   })
+   .catch(error => {
+       console.log(error.response);
+   })
+}
 
 
     return (
-        <div>  
+        <div  className="fooddiv">  
+         <div className="leftside"><h1 className="mealinfoheader">Enter Meal Info</h1>
+         <p name="mealp">Meal {mealsexist? (fooditem.length +1) : "1"}:  </p>
+      <form name="foodsubform">   
+ 
+         <label name="fooddescription">
+         FoodDescription:
+            </label> 
+         <input type="text" value={foodDescription} className="MealType" onChange={inputFoodHandler}></input>  
+         <label name="callabel">
+           Calories: 
+            </label> 
+         <input type="number" value={calories} className="inputcalories" onChange={inputCaloriesHandler} min="0"></input>
+         <button onClick={submitHandler} className="mealbutton" >Submit</button>
+      </form>
+      <SearchFoods/>
+      </div>
+
+        <div className="meals" >
             <h1>{dateChanged}</h1>
             <form>
-          <label name="date">Date: </label>
+          {/*<label name="date">Date: </label>*/}
 <         input className="inputdate" value={date} type='date' onChange={dateHandler}></input>
-          <button onClick={datesubmitHandler} className="mealssubbutton" >Change Date</button>
+          <button onClick={datesubmitHandler} className="changeDate" >Change Date</button>
+          
+          <div>
+          <label name="currentweight">
+          Current Bodyweight in lbs: <p>{dailyWeight}</p>
+            </label> 
+         <input type="number" value={weight} className="weight" onChange={inputWeightHandler} min="0" step="0.5"></input>   
+         <button className= "weightsbutton" onClick={submitWeightHandler}>Submit</button>
+         </div>
+
+
            </form>
             {mealsexist?
-               <div>{entryInfo.weight}  
-       <div >
+               <div>{/*entryInfo.weight*/}  
+       <div className="entrydiv" >
            {fooditem.map(item=>(
 
-           <div  key={item._id} >
-           {!item.edit? `${item.food_description} ${item.meal_number} ${item.calories}`: 
+           <div className="mealdetails" key={item._id} >
+           {!item.edit? <p name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number} Calories: {item.calories}</div> {item.food_description} </p>: 
+<div name="editdiv">
+<form name="editform">   
 <div>
-  <p> {item.food_description} {item.meal_number} {item.calories}   </p>
-<form>   
-<label name="callabel">
-    Calories 
+<label name="calorieseditlabel">
+    Calories: 
      </label> 
-  <input type="number"  className="inputcalories" onChange={editCaloriesHandler} min="0"></input>
-  <label name="fooddescription">
+  <input type="number"  className="inputeditcalories" onChange={editCaloriesHandler} min="0"></input>
+  </div>
+  <div>
+  <label name="foodeditdescription">
   FoodDescription:
      </label> 
-  <input type="text"  className="MealType" onChange={editFoodHandler}></input>   
-  <button onClick={(e)=>submitEditHandler(e, item)} className="mealssubbutton" >Submit</button>
+  <input type="text"  className="editmeal" onChange={editFoodHandler}></input>  
+  </div>
+  <button  className="subedditbutton" onClick={(e)=>submitEditHandler(e, item)} >Submit</button>
+  <button name="closebutton" onClick={(e) => foodEditHandler(e, item._id)}>Close</button>
 </form>
 </div>
 
 
            }
-           <button onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>
-           <button className={item.deletable? "" : "nodelete"} onClick={(e) => deleteFoodHandler(e, item)}>delete</button>
+          
+         { /* <button className="foodeditbutton" onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>*/}
+          <button className={!item.edit? "foodeditbutton" : "nodelete"} onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>
+
+           <button className={item.deletable? "deletefoodbutton" : "nodelete"} onClick={(e) => deleteFoodHandler(e, item)}>delete</button>
+   
            </div>
               )) }
            </div>  </div>
            :<div></div>
          
            }
-
-       <form>   
-       <label name="callabel">
-           Calories 
-            </label> 
-         <input type="number" value={calories} className="inputcalories" onChange={inputCaloriesHandler} min="0"></input>
-         <label name="fooddescription">
-         FoodDescription:
-            </label> 
-         <input type="text" value={foodDescription} className="MealType" onChange={inputFoodHandler}></input>   
-         <label name="currentweight">
-         Weight:
-            </label> 
-         <input type="number" value={weight} className="weight" onChange={inputWeightHandler} min="0" step="0.5"></input>   
-         <button onClick={submitHandler} className="mealssubbutton" >Submit</button>
-      </form>
+</div>
+      
 
 
           </div>

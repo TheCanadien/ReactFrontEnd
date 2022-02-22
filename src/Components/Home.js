@@ -1,8 +1,53 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import Login from './Login';
 import Register from './Register';
+import {useNavigate} from 'react-router-dom';
+
+
 
 const Home = ({isVisible, setVisible, userName, setUserName}) =>{
+
+   //  const[logged, setLogged] = useState(false);
+     let navigate = useNavigate();
+     
+ useEffect(()=>{
+
+   signedIn();
+
+
+
+ },[])
+
+ const atoken = JSON.parse(localStorage.getItem('token'));
+ const signedIn =()=>{
+ axios.get('http://18.213.166.93:3000/entry/', { headers:{    
+    "content-type": "application/json",
+    "Authorization" : atoken
+  }} )
+    .then(res => {
+    // setLogged(true);  
+     console.log(res.data);
+     const aName = res.data;
+     setUserName(aName);
+     navigate(`/user/${aName}`);
+    })
+    .catch(err=>{
+    // setLogged(false);
+    })
+ 
+
+
+ }
+
+
+
+
+
+
+
+
+
 
   
 
