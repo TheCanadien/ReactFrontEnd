@@ -11,6 +11,7 @@ const [fooddetails, setFoodDetails] = useState({});
 const [selected, setSelected] = useState(false);
 const [numberofgrams, setNumberOfGrams] = useState(100); 
 const [quantities, setQuantities] = useState([]);
+const [gramschanged, setGramsChanged] = useState(100);
 
 const searchFoodsHandler = (e)=>{
   //console.log(e.target.value)  
@@ -47,10 +48,31 @@ Object.keys(item).forEach((key, index) =>{
  }
 })
 setQuantities(obj);
-
-
-
+setNumberOfGrams(100);
+setGramsChanged(100);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //console.log(item.food_type);
 //setFoodDetails(item);
@@ -60,6 +82,7 @@ setQuantities(obj);
      setSelected(false);
      setFoundFoods([]);
      setSearchFood('');
+     setGramsChanged(100);
    }
 
 
@@ -88,7 +111,7 @@ const submitGramsHandler = (e)=>{
      }
     })
     setQuantities(obj);
-
+    setGramsChanged(numberofgrams);
 }
 
 
@@ -99,21 +122,21 @@ const submitGramsHandler = (e)=>{
 
 
     return(
-        <div className="searchFoods">
+        <div className="searchFoods" id="formdiv">
             <form  id={fooddetails.food_type}>
                 <label className="searchFoodLabel"><h1>Search for Food info:</h1></label>
-                <input className="foodsearch" value={searchFood} type="text" onChange={searchFoodsHandler}></input>
+                <input id="fooddetails" className="foodsearch" value={searchFood} type="text" onChange={searchFoodsHandler}></input>
                 <div>
                 <button className="searchsub" type="submit" onClick={submitHandler}>Submit</button>
                 <button onClick={clearResultsHandler}>clear</button>
                 </div>
             </form>
-          {selected? <div>
+          {selected? <div className= "details" >
             <h3>Food Type:&nbsp; {fooddetails.food_type}</h3>
            <label>Change quantity</label> 
-          <input onChange={inputGramsHandler} type="number" min="0"></input>
-          <button onClick={submitGramsHandler}>Submit</button>
-         <p>{numberofgrams} gram(s)</p>
+          <input value={numberofgrams} className="gramsinput" onChange={inputGramsHandler} type="number" min="0"></input>
+          <button className="submitQuantity" onClick={submitGramsHandler}>Submit</button>
+         <p>{gramschanged} gram(s)</p>
         <p>Calories:&nbsp;&nbsp;{quantities.kcal}</p>
         <p>Protein:&nbsp;&nbsp;{quantities.protein} gram(s)</p>
         <p>Total Carbs:&nbsp;&nbsp;{quantities.carbohydrate} gram(s)</p>
@@ -130,12 +153,14 @@ const submitGramsHandler = (e)=>{
 
 
 
-            <ul className="foundFoods">
+            <ul className={foundFoods.length >0 ? "foundFoods" : "hidden"}>
         {foundFoods.map(item =>(
-           <li  key={item.id}className ="foodsList"> 
-          <HashLink onClick={(e)=>clickHandler(e,item)} className='foodlinks' to={`#${fooddetails.food_type}`}>
+           <li   key={item.id}className ="foodsList"> 
+          <HashLink className="hashlink" onClick={(e)=>clickHandler(e,item)} className='foodlinks' to="#fooddetails">
           {item.food_type}
           </HashLink>
+
+          
           </li>
           ))}
       </ul>

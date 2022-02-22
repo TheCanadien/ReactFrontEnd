@@ -15,7 +15,8 @@ div.user{
     line-height: 3vh;
     display: flex;
     height: 35vh;
-    background-color: lightblue;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
+
     border: 0.5vh solid lightskyblue;
     justify-content: flex-end;
 
@@ -117,6 +118,8 @@ button.mealssubbutton{
     width: 4vw;
     margin-left: 1vw;
     margin-top: 10vh;
+    background-image: linear-gradient(45deg, #101070 0%, #00328f 11%, #004ca8 22%,
+     #0065b8 33%, #007ebd 44%, #0097bd 56%, #00aab3 67%, #00c2a8 78%, #00d69a 89%, #77e98e 100%);
 }
 
 .editVisible{
