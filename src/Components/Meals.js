@@ -8,7 +8,7 @@ const Meals = ({userData, setUserData, date, setDate})=>{
 
 
 
-    const [entryInfo, setEntryInfo] = useState({});
+   // const [entryInfo, setEntryInfo] = useState({});
     const atoken = JSON.parse(localStorage.getItem('token'));
     const [fooditem, setFoodItem] = useState([]);
     const [mealsexist, setMealsExist] = useState(false);
@@ -53,10 +53,16 @@ const getMeals = async () =>{
 
     //setFoodItem(res.data.food_item);
     setFoodItem(fooddata);
+    if(res.data.weight !== null){
     setDailyWeight(res.data.weight);
+    }
+    else{
+      setDailyWeight(0);
+    }
+
     //console.log(res);
     setMealsExist(true);
-     setEntryInfo(res.data)
+    // setEntryInfo(res.data)
      }
   })
   .catch(error => {
@@ -353,7 +359,7 @@ const submitWeightHandler = (e)=>{
             <h1>{dateChanged}</h1>
             <form>
           {/*<label name="date">Date: </label>*/}
-<         input className="inputdate" value={date} type='date' onChange={dateHandler}></input>
+          <input className="inputdate" value={date} type='date' onChange={dateHandler}></input>
           <button onClick={datesubmitHandler} className="changeDate" >Change Date</button>
           
           <div>
@@ -372,7 +378,7 @@ const submitWeightHandler = (e)=>{
            {fooditem.map(item=>(
 
            <div className="mealdetails" key={item._id} >
-           {!item.edit? <p name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number} Calories: {item.calories}</div> {item.food_description} </p>: 
+           {!item.edit? <div name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number} Calories: {item.calories}</div> {item.food_description} </div>: 
 <div name="editdiv">
 <form name="editform">   
 <div>

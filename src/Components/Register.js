@@ -79,13 +79,13 @@ setName('');
         <div>
      <form className= {isVisible ? 'makeVisibile' : 'makeInvisible'} id="registerForm">
 
-    <label> UserName :</label>
+    <label className="usernameLabel"> UserName :</label>
         <div><input value={name} onChange={userHandler}  type="text" name="username2" /></div>  
-         <label>Email :</label>
+         <label className="emailLabel">Email :</label>
          <div> <input value={email} onChange={emailHandler}type="email" name="email" /></div>
-         <label> Password:</label>
+         <label className="passwordLabel"> Password:</label>
          <div><input value={password} onChange={passHandler} type="password" name="password2"/></div> 
-        <input className="registersubButton" onClick={submitHandler} type="submit" value="Submit" />
+        <input className="regsubButton" onClick={submitHandler} type="submit" value="Register" />
       <div>  <button className={isVisible ? "closeButton" : 'makeInvisible'} onClick={makeInvisible}>X</button></div>
    </form>
    </div>

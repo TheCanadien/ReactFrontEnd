@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import UserInfo from './UserInfo';
 import Meals from './Meals';
 import '../User.scss';
-import SearchFoods from './SearchFoods';
 
 
 const User = () =>{

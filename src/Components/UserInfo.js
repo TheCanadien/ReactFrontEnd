@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import '../User.scss';
+//import Graph from './Graph';
+import {useNavigate} from 'react-router-dom';
+
 
 const UserInfo =({userData, setUserData})=>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
-
+    let navigate = useNavigate();
 
   const [userData1, setUserData1] = useState({});
 
@@ -27,6 +30,9 @@ const UserInfo =({userData, setUserData})=>{
          })
          .catch(error => {
              console.log(error.response);
+             if(error.response.data === 'Access Denied'){
+              navigate('/');
+             }
          })
       
       };
@@ -96,7 +102,9 @@ const editForm = ()=>{
 
 return(
 <div className="editText">
-
+  <div>
+  {/*<Graph userData={userData}/>*/}
+  </div>
 <div name="auser" className="user">
        <div>Username: {userData.username}</div>
        <div>Profile Public: {JSON.stringify(userData.public)}</div>

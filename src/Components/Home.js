@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Login from './Login';
 import Register from './Register';
 import {useNavigate} from 'react-router-dom';

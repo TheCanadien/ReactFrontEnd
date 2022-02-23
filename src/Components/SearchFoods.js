@@ -156,7 +156,7 @@ const submitGramsHandler = (e)=>{
             <ul className={foundFoods.length >0 ? "foundFoods" : "hidden"}>
         {foundFoods.map(item =>(
            <li   key={item.id}className ="foodsList"> 
-          <HashLink className="hashlink" onClick={(e)=>clickHandler(e,item)} className='foodlinks' to="#fooddetails">
+          <HashLink  onClick={(e)=>clickHandler(e,item)} className='foodlinks' to="#fooddetails">
           {item.food_type}
           </HashLink>
 

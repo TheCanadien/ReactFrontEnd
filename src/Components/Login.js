@@ -24,7 +24,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
      "password" : password,
      };
      
-     console.log(userLogin);
+   // console.log(userLogin);
        axios.post('http://18.213.166.93:3000/api/user/login', JSON.stringify(userLogin),{ headers:{
          "content-type": "application/json",
        }}
@@ -36,22 +36,25 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
           console.log('This is the body');
           console.log(res);
           localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+          setUserName(name);
+          setPassword('');
+          setName(''); 
+       
+          navigate(`/user/${name}`);
+
+          
         })
         .catch(error => {
             console.log(error.response);
         })
-    setUserName(name);
-    setPassword('');
-    setName(''); 
- 
-    navigate(`/user/${name}`);
+
     
   }
 
 
   const makeVisible= (e) =>{
     setVisible(!isVisible);
-    console.log('shit');
+
     e.preventDefault();
 }
 
@@ -71,15 +74,15 @@ const passHandler = (e)=>{
     return(
         <div>
         <form className= {isVisible ? 'makeOpaque' : ''} name="logform">  
-      <label>UserName :</label>
+      <label className="logUserLabel">UserName :</label>
        <div> <input value={name} onChange={userHandler} type="text" name="uname"  disabled=   {isVisible ? "disabled" : ''}                 
        
        /></div>
-       <label>Password :</label>
+       <label className="logPassLabel">Password :</label>
        <div> <input value={password} onChange={passHandler}type="password" name="pword" disabled=   {isVisible ? "disabled" : ''}
        /></div> 
         <div>
-        <input className="subButton" onClick={submitHandler}  type="submit" value="Log in" disabled=   {isVisible ? "disabled" : ''}
+        <input className="logbutton" onClick={submitHandler}  type="submit" value="Log in" disabled=   {isVisible ? "disabled" : ''}
         />
         </div>
         <button className={isVisible ? "invisiblebutton" : 'registerbutton'} onClick={makeVisible}
