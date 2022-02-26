@@ -21,7 +21,7 @@ const Home = ({isVisible, setVisible, userName, setUserName}) =>{
 
  const atoken = JSON.parse(localStorage.getItem('token'));
  const signedIn =()=>{
- axios.get('http://18.213.166.93:3000/entry/', { headers:{    
+ axios.get('http://52.4.202.130:3000/entry/', { headers:{    
     "content-type": "application/json",
     "Authorization" : atoken
   }} )
@@ -30,7 +30,7 @@ const Home = ({isVisible, setVisible, userName, setUserName}) =>{
      console.log(res.data);
      const aName = res.data;
      setUserName(aName);
-     navigate(`/user/${aName}`);
+     navigate(`/account/${aName}`);
     })
     .catch(err=>{
     // setLogged(false);

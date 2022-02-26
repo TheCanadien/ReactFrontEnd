@@ -25,7 +25,7 @@ const Meals = ({userData, setUserData, date, setDate})=>{
 
 const getMeals = async () =>{
    console.log('calling getMeals');
-    await axios.get(`http://18.213.166.93:3000/entry/${date}/${userData.username}`,{ headers:{    
+    await axios.get(`http://52.4.202.130:3000/entry/${date}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken
  }} )
@@ -124,7 +124,7 @@ const submitHandler =(e) =>{
   e.preventDefault();
 
   if(!mealsexist){
-  axios.post('http://18.213.166.93:3000/entry/', addmeal, { headers:{
+  axios.post('http://52.4.202.130:3000/entry/', addmeal, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken
   }} )
@@ -153,7 +153,7 @@ const submitHandler =(e) =>{
     delete addmeal.date;
     const nextmealnumber = fooditem.length + 1;
     addmeal.food_item[0].meal_number = nextmealnumber;
-    axios.patch(`http://18.213.166.93:3000/update/${dateChanged}/${userData.username}`, addmeal, { headers:{
+    axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}`, addmeal, { headers:{
         "content-type": "application/json",
         "Authorization" : atoken
       }} )
@@ -234,7 +234,7 @@ const updated = {
 }
 console.log(updated);
 
- axios.patch(`http://18.213.166.93:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
+ axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
   "content-type": "application/json",
   "Authorization" : atoken
 }} )
@@ -265,7 +265,7 @@ const deleteFoodHandler = (e, item) =>{
 
 
 if(fooditem.length >1){
-axios.patch(`http://18.213.166.93:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"dummy": "dummy"}, { headers:{
+axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"dummy": "dummy"}, { headers:{
   "content-type": "application/json",
   "Authorization" : atoken
 }} )
@@ -292,7 +292,7 @@ axios.patch(`http://18.213.166.93:3000/entry/${dateChanged}/${userData.username}
  })
 }
 if(fooditem.length ===1){
-  axios.delete(`http://18.213.166.93:3000/entry/${dateChanged}/${userData.username}`, { headers:{
+  axios.delete(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken
   }} )
@@ -322,7 +322,7 @@ const submitWeightHandler = (e)=>{
   const addWeight = {"weight" : weight}
   console.log(addWeight);
 
-  axios.patch(`http://18.213.166.93:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
+  axios.patch(`http://52.4.202.130:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken
   }} )

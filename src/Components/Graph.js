@@ -2,6 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {Line} from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
+import { Chart } from 'chart.js';
+import 'chartjs-adapter-date-fns';
+
+
 
 const Graph = ({userData}) =>{
 
@@ -16,10 +20,6 @@ const Graph = ({userData}) =>{
 
 
     },[currentdate, previousDate]);
-
-   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-     'September', 'October', 'November', 'December'];
-
 
    //  months.forEach(element => console.log(element));
  const [dates, setDates] = useState([]);
@@ -73,7 +73,7 @@ const Graph = ({userData}) =>{
 
     const getMeals = async () =>{
         console.log('calling getMeals');
-         await axios.get(`http://18.213.166.93:3000/entry/${currentdate}/${previousDate}${userData.username}`,{ headers:{    
+         await axios.get(`http://52.4.202.130:3000/entry/${currentdate}/${previousDate}${userData.username}`,{ headers:{    
         "content-type": "application/json",
         "Authorization" : atoken
       }} )
@@ -130,7 +130,9 @@ const Graph = ({userData}) =>{
 </div>
  */}
 
-            
+<script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
             <Line
         data={state}
         options={{

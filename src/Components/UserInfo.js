@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import '../User.scss';
-//import Graph from './Graph';
+import Graph from './Graph';
 import {useNavigate} from 'react-router-dom';
 
 
@@ -19,7 +19,7 @@ const UserInfo =({userData, setUserData})=>{
        },[]);
   
          const getStuff = async () =>{
-         await axios.get('http://18.213.166.93:3000/user', { headers:{
+         await axios.get('http://52.4.202.130:3000/user', { headers:{
           "content-type": "application/json",
           "Authorization" : atoken
         }} )
@@ -60,7 +60,7 @@ const UserInfo =({userData, setUserData})=>{
       
        console.log(userData1);
 
-        axios.patch('http://18.213.166.93:3000/user', userData1, { headers:{
+        axios.patch('http://52.4.202.130:3000/user', userData1, { headers:{
         "content-type": "application/json",
         "Authorization" : atoken
       }} )
@@ -103,7 +103,7 @@ const editForm = ()=>{
 return(
 <div className="editText">
   <div>
-  {/*<Graph userData={userData}/>*/}
+  {<Graph userData={userData}/>}
   </div>
 <div name="auser" className="user">
        <div>Username: {userData.username}</div>

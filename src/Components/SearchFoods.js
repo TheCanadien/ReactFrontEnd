@@ -24,7 +24,7 @@ const searchFoodsHandler = (e)=>{
    // console.log('button hit');
     console.log(searchFood);
 
-   axios.get(`http://18.213.166.93:8080/api/foods/${searchFood}/`)
+   axios.get(`http://52.4.202.130:8080/api/foods/${searchFood}/`)
     .then(res => {
       console.log(res.data);
       setFoundFoods(res.data);

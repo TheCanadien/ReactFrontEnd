@@ -29,7 +29,7 @@ const userLogin = {
 
  console.log(userLogin);
 
-    axios.post('http://18.213.166.93:3000/api/user/register', JSON.stringify(userLogin), { headers:{
+    axios.post('http://52.4.202.130:3000/api/user/register', JSON.stringify(userLogin), { headers:{
       "content-type": "application/json",
     }})
      .then(res => {

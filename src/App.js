@@ -16,7 +16,7 @@ function App() {
    <Routes>
    <Route index element={<Home isVisible={isVisible} setVisible={setVisible}
     userName = {userName} setUserName={setUserName}/>} />
-   <Route path="user/:id" element={<User/>} />
+   <Route path="account/:id" element={<User/>} />
    </Routes>
    </Router>
    
