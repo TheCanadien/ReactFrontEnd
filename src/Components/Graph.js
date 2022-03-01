@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Line} from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
-import { Chart } from 'chart.js';
 import 'chartjs-adapter-date-fns';
+import { setDate } from 'date-fns';
 
 
 
@@ -11,32 +11,23 @@ const Graph = ({userData}) =>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
     const [currentdate, setCurrentDate] = useState(null);
-    const [previousDate, setPreviousDate] = useState(null);
+    const [previousdate, setPreviousDate] = useState(null);
 
     useEffect(()=>{
     
-    
-
-
-
-    },[currentdate, previousDate]);
-
-   //  months.forEach(element => console.log(element));
- const [dates, setDates] = useState([]);
-
-    const calculateMonthPrior = ()=>{
-     
-
-
-
-
-
+    setCurrentDate(createDateString());
+    if(currentdate !== null){
+     const tempdate = new Date(Date.now());
+     tempdate.setDate(-60);
+     setPreviousDate(createDateString(tempdate));
+    }
+    if(currentdate !== null && previousdate !== null){
+      getMeals();
     }
 
+    },[]);
 
  
-
-
 
     const createDateString = (dateValue) =>{
         
@@ -44,7 +35,6 @@ const Graph = ({userData}) =>{
         if(dateValue!==undefined){
          date = new Date(dateValue);
         }
-       // 
         let num = date.getMonth() + 1;
         let month = num.toString();
         let adate = date.getDate().toString();
@@ -61,6 +51,12 @@ const Graph = ({userData}) =>{
 
    // console.log(createDateString());
 
+      console.log(currentdate);
+      console.log(previousdate);
+     // console.log(previousdate);
+       //const test = new Date(Date.now());
+     //  test.setDate(-60);
+      //console.log(test);
 
 
 
@@ -72,26 +68,31 @@ const Graph = ({userData}) =>{
 
 
     const getMeals = async () =>{
+
         console.log('calling getMeals');
-         await axios.get(`http://52.4.202.130:3000/entry/${currentdate}/${previousDate}${userData.username}`,{ headers:{    
+         await axios.get(`http://52.4.202.130:3000/entry/${previousdate}/${currentdate}/${userData.username}`,{ headers:{    
         "content-type": "application/json",
         "Authorization" : atoken
       }} )
         .then(res => {
+          console.log(res);
         })
-        .catchv(res=>{
-
+        .catch(error=>{
+          console.log(error.response);
         });
     }
 
 
    const dateHandler = (e) =>{
     console.log(e.target.value);
+    setCurrentDate(e.target.value);
 
    }
 
    const datesubmitHandler = (e) =>{
       e.preventDefault();
+      console.log(e.target.value);
+      console.log(e.target.value);
    }
 
 
@@ -121,14 +122,16 @@ const Graph = ({userData}) =>{
 
     return(
         <div>
- {/*           
+ {          
 <div>
-
+       {/*}
       <input className="graphdate" type='date' onChange={dateHandler}></input>
-          <button onClick={datesubmitHandler} className="changegraphdate" >Change Date</button>
+          <input value={currentdate} className="graphdate2" type='date' onChange={dateHandler}></input>
+ <button onClick={datesubmitHandler} className="changegraphdate" >Change Date</button>*/}
+
 
 </div>
- */}
+ }
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>

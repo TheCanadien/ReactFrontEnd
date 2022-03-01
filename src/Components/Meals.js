@@ -15,6 +15,7 @@ const Meals = ({userData, setUserData, date, setDate})=>{
     const [dateChanged, setDateChanged] = useState(date);
   //  const [editfooditem, setEditFoodItem] = useState([]);
    const [dailyWeight, setDailyWeight] = useState(0);
+   const [totalCalories, setTotalCalories] = useState(0);
 
 
 
@@ -40,6 +41,7 @@ const getMeals = async () =>{
      }
      else{
     const fooddata = res.data.food_item;
+    setTotalCalories(res.data.total_calories);
     fooddata.map((item, index) =>{
      
      item.edit=false;  
@@ -140,6 +142,7 @@ const submitHandler =(e) =>{
 
    //setFoodItem(res.data.food_item);
     setFoodItem(foodinfo);
+    setTotalCalories(addmeal.food_item[0].calories);
 
     setCalories(0);
     setFoodDescription('');
@@ -172,7 +175,7 @@ const submitHandler =(e) =>{
          return {...item, deletable: false}
        })
         setFoodItem([...array, fooddata]);
-
+        setTotalCalories(parseInt(totalCalories) + parseInt(addmeal.food_item[0].calories));
       console.log('here');
    
        setCalories(0);
@@ -222,18 +225,33 @@ const foodEditHandler = (e, itemid) =>{
 const submitEditHandler = (e, item) =>{
  e.preventDefault();
 
+ let previousCal = 0;
+
+ fooditem.map(items=>{
+    if(items._id === item._id ){
+      console.log(items);
+      previousCal = items.calories;
+    }
+ })
+
+
 
  console.log(item);
 const updated = {
+  "previouscal" : previousCal,
   "food_item":[{
  "calories" : editCal,
  "food_description" : editFood,
  "_id" : item._id,
- "meal_number": item.meal_number
-  }]
+ "meal_number": item.meal_number,
+  }],
+ 
 }
 console.log(updated);
+/////////////////////////////////
 
+
+///////////////////////
  axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
   "content-type": "application/json",
   "Authorization" : atoken
@@ -244,7 +262,8 @@ console.log(updated);
 
     setFoodItem(fooditem.map(items=> {
       if(items._id === item._id){
-        return {...items, calories: editCal, food_description: editFood, edit:false}
+        setTotalCalories(parseInt(totalCalories) -parseInt(previousCal) +parseInt(updated.food_item[0].calories));
+        return {...items, calories: editCal, food_description: editFood, edit:false} 
       } 
       return items;
       }))
@@ -261,11 +280,23 @@ const deleteFoodHandler = (e, item) =>{
   console.log(item);
  e.preventDefault();
 ///////////////////////////////////////////////////////////////////////////////////////
+let reducecals = 0;
+
+fooditem.map(items=>{
+   if(items._id === item._id ){
+     console.log(items);
+     reducecals = items.calories;
+   }
+})
+
+
+
+
 
 
 
 if(fooditem.length >1){
-axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"dummy": "dummy"}, { headers:{
+axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"reducecals": reducecals}, { headers:{
   "content-type": "application/json",
   "Authorization" : atoken
 }} )
@@ -283,6 +314,7 @@ axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/
    })
    array.pop();
    setFoodItem(array);
+   setTotalCalories(parseInt(totalCalories)- parseInt(reducecals));
 
 
   ///////////////////////////
@@ -357,6 +389,7 @@ const submitWeightHandler = (e)=>{
 
         <div className="meals" >
             <h1>{dateChanged}</h1>
+            <div>Total Daily Calories: {totalCalories}</div>
             <form>
           {/*<label name="date">Date: </label>*/}
           <input className="inputdate" value={date} type='date' onChange={dateHandler}></input>
