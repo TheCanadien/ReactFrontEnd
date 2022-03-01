@@ -10,6 +10,9 @@ const UserInfo =({userData, setUserData})=>{
     const atoken = JSON.parse(localStorage.getItem('token'));
     let navigate = useNavigate();
 
+    const [bdayexists, setBdayExists] = useState(false); 
+    const [heightexists, setHeightExists] = useState(false);
+    const [weightexists, setWeightExists] = useState(false);
   const [userData1, setUserData1] = useState({});
 
  
@@ -26,7 +29,24 @@ const UserInfo =({userData, setUserData})=>{
           .then(res => {
          //  console.log(res);
           setUserData(res.data);
-  
+          if(res.data.birthday !== undefined){
+              setBdayExists(true);   
+           }
+           else{
+             setBdayExists(false);
+           }
+          if(res.data.height !== undefined){
+            setHeightExists(true);
+          }
+          else{
+            setHeightExists(false);
+          }
+          if(res.data.weight !== undefined){
+            setWeightExists(true);
+          }
+          else{
+            setWeightExists(false);
+          }
          })
          .catch(error => {
              console.log(error.response);
@@ -36,7 +56,8 @@ const UserInfo =({userData, setUserData})=>{
          })
       
       };
-      const d = new Date(userData.birthday);
+     
+    
 
     const [weight, setWeight] = useState(null);
     const [birthdate, setBirthdate] = useState(null);
@@ -47,14 +68,18 @@ const UserInfo =({userData, setUserData})=>{
     const submitHandler = (e)=>{
       e.preventDefault();
 
+
        if(weight !== null){
          userData1['weight'] = weight;
+         setWeightExists(true);
        }
        if(birthdate !== null){
          userData1['birthday'] = birthdate;
+         setBdayExists(true);
        }
        if(height !== null){
        userData1['height'] = height;
+       setHeightExists(true);
        }
        userData1['public'] = priv;
       
@@ -65,16 +90,14 @@ const UserInfo =({userData, setUserData})=>{
         "Authorization" : atoken
       }} )
         .then(res => {
-         console.log(res);
-        setUserData1(res.data);
-
+         console.log(res.data);
+     //   setUserData1(res.data);
+        setUserData(res.data);
        })
        .catch(error => {
            console.log(error.response);
        })
         setEdit(false);
-         getStuff();
-
      }
 ////////////////////////////////////////////////////////
 const birthdateHandler = (e)=>{
@@ -108,10 +131,11 @@ return(
 <div name="auser" className="user">
        <div>Username: {userData.username}</div>
        <div>Profile Public: {JSON.stringify(userData.public)}</div>
-       <div>Height: {userData.height} inches</div>
-       <div>Weight: {userData.weight} lbs </div>
-       <div>Birthdate: {d.toDateString().substring(3)}</div>
-       <div>BMI: {((userData.weight/userData.height**2)*703).toFixed(2)}</div> 
+      {heightexists? <div>Height: {userData.height} inches</div>: <div>Height: </div>}
+       {weightexists? <div>Weight: {userData.weight} lbs </div>: <div>Weight: </div>}
+       
+      {bdayexists? <div>Birthdate: {userData.birthday.substring(0,10)}</div> : <div>Birthdate: </div>}
+       {heightexists && weightexists? <div>BMI: {((userData.weight/userData.height**2)*703).toFixed(2)}</div>:<div>BMI: </div>} 
         </div>
 
   <div className= "editdiv">

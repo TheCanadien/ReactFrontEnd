@@ -217,6 +217,7 @@ input.inputeditcalories{
 [name=currentweight]{
     padding-top: 1vh;
     font-weight: bold;
+    padding-bottom: 2vh;
 }
 
 .mealbutton{
@@ -243,3 +244,11 @@ input.inputeditcalories{
     width: 7vw;
 }
 
+.totalcals{
+    font-weight: bold;
+
+}
+
+[name=bodyweightdiv]{
+    padding-top: 1vh;
+}

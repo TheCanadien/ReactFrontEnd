@@ -20,12 +20,14 @@ const Meals = ({userData, setUserData, date, setDate})=>{
 
 
     useEffect(()=>{
- 
+     if(userData.username !== undefined){
       getMeals();
+    }
           },[userData]);
 
 const getMeals = async () =>{
    console.log('calling getMeals');
+   console.log(userData.username);
     await axios.get(`http://52.4.202.130:3000/entry/${date}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken
@@ -389,15 +391,15 @@ const submitWeightHandler = (e)=>{
 
         <div className="meals" >
             <h1>{dateChanged}</h1>
-            <div>Total Daily Calories: {totalCalories}</div>
+            <div className="totalcals">Total Daily Calories: {totalCalories}</div>
             <form>
           {/*<label name="date">Date: </label>*/}
           <input className="inputdate" value={date} type='date' onChange={dateHandler}></input>
           <button onClick={datesubmitHandler} className="changeDate" >Change Date</button>
           
-          <div>
+          <div name="bodyweightdiv">
           <label name="currentweight">
-          Current Bodyweight in lbs: <p>{dailyWeight}</p>
+          Daily Bodyweight in lbs: {dailyWeight}
             </label> 
          <input type="number" value={weight} className="weight" onChange={inputWeightHandler} min="0" step="0.5"></input>   
          <button className= "weightsbutton" onClick={submitWeightHandler}>Submit</button>
