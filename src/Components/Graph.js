@@ -7,25 +7,27 @@ import { setDate } from 'date-fns';
 
 
 
-const Graph = ({userData}) =>{
+const Graph = ({userData, date}) =>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
     const [currentdate, setCurrentDate] = useState(null);
     const [previousdate, setPreviousDate] = useState(null);
 
+
+
     useEffect(()=>{
     
-    setCurrentDate(createDateString());
-    if(currentdate !== null){
-     const tempdate = new Date(Date.now());
-     tempdate.setDate(-60);
-     setPreviousDate(createDateString(tempdate));
-    }
-    if(currentdate !== null && previousdate !== null){
-      getMeals();
-    }
 
-    },[]);
+
+      setCurrentDate(date);
+      const tempdate = new Date(Date.now());
+      tempdate.setDate(-60);
+      setPreviousDate(createDateString(tempdate));
+
+      getMeals();
+    
+
+    },[userData]);
 
  
 
@@ -70,16 +72,34 @@ const Graph = ({userData}) =>{
     const getMeals = async () =>{
 
         console.log('calling getMeals');
+      
+
+
+     
+
+        console.log(currentdate);
+        console.log(previousdate);
+
+
+
+
+
+       if(previousdate !== null && currentdate !== null && userData.username !== undefined){
+
          await axios.get(`http://52.4.202.130:3000/entry/${previousdate}/${currentdate}/${userData.username}`,{ headers:{    
         "content-type": "application/json",
         "Authorization" : atoken
       }} )
         .then(res => {
           console.log(res);
+          console.log('here');
         })
         .catch(error=>{
           console.log(error.response);
         });
+      }
+
+
     }
 
 

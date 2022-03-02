@@ -22,7 +22,8 @@ const searchFoodsHandler = (e)=>{
    const submitHandler =(e)=>{
     e.preventDefault();
    // console.log('button hit');
-    console.log(searchFood);
+    //console.log(searchFood);
+    if(searchFood !== ''){
 
    axios.get(`http://52.4.202.130:8080/api/foods/${searchFood}/`)
     .then(res => {
@@ -33,7 +34,7 @@ const searchFoodsHandler = (e)=>{
    .catch(error => {
        console.log(error.response);
    })
-
+  }
    }
 
    const clickHandler = (e, item)=>{

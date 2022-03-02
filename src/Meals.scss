@@ -252,3 +252,33 @@ input.inputeditcalories{
 [name=bodyweightdiv]{
     padding-top: 1vh;
 }
+
+.prompt{
+    font-weight: bold;
+    background-image: linear-gradient(
+        45deg,
+        hsl(350deg 100% 37%) 0%,
+        hsl(353deg 87% 35%) 11%,
+      );
+      border-radius: 1vh;
+      padding: 2vh;
+      border: solid black;
+      color: white;
+      
+}
+
+.weightprompt{
+    font-weight: bold;
+    margin-top: 2vh;
+    font-size: 3vh;
+    background-image: linear-gradient(
+        45deg,
+        hsl(350deg 100% 37%) 0%,
+        hsl(353deg 87% 35%) 11%,
+      );
+      border-radius: 1vh;
+      padding: 3vh;
+      border: solid black;
+      color: white;
+      
+}

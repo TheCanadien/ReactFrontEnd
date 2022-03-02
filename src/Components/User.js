@@ -30,7 +30,7 @@ const [date, setDate] = useState(todaysdate);
 
     return (
         <div className="userpage">
-       <UserInfo userData={userData} setUserData={setUserData}/>
+       <UserInfo userData={userData} setUserData={setUserData} date={date} setDate={setDate} />
        <div>
         <Meals userData={userData} setUserData={setUserData}  date={date} setDate={setDate}/>
         </div>

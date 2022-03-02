@@ -5,7 +5,7 @@ import Graph from './Graph';
 import {useNavigate} from 'react-router-dom';
 
 
-const UserInfo =({userData, setUserData})=>{
+const UserInfo =({userData, setUserData, date, setDate})=>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
     let navigate = useNavigate();
@@ -121,12 +121,18 @@ const editForm = ()=>{
   setEdit(!edit);
 }
 
+const signoutHandler=(e)=>{
+e.preventDefault();
+localStorage.removeItem('token');
+navigate('/');
+}
+
 
 
 return(
 <div className="editText">
   <div>
-  {<Graph userData={userData}/>}
+  {<Graph userData={userData} date={date}/>}
   </div>
 <div name="auser" className="user">
        <div>Username: {userData.username}</div>
@@ -140,6 +146,7 @@ return(
 
   <div className= "editdiv">
 <button name="editbutton" onClick= {editForm}>Edit </button>
+<button onClick={signoutHandler} className="signout">Sign out</button>
 </div>
 <form className = {edit? "editVisible" : "invisible"} >
     <label> Birthdate:
