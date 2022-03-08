@@ -7,12 +7,13 @@ const Register = ({isVisible, setVisible,  userName, setUserName}) =>{
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  
+  const [error, setError] = useState(null);
     const submitHandler = (e) =>{
         e.preventDefault();
 
 ////////////////////////////////////////
 
+setError(null);
 /*
 const userLogin ={
  "name" : userName,
@@ -37,7 +38,22 @@ const userLogin = {
       console.log(res.data);
     })
     .catch(error => {
+      let message = error;
+      if(!message.response){
+        console.log('Error: Can not connect to network');
+       setError('Error: Connection refused');
+      }  
+      else{
       console.log(error.response);
+      console.log(error.response);
+      (console.log(error.response.data));
+      if(message.response.status === 400){
+      setError(message.response.data.replaceAll('"', ''));
+      }
+      else{
+        setError(message.response.status + " " + message.response.statusText);
+      }
+    }
   })
 
 
@@ -73,10 +89,26 @@ setName('');
     }
     ///////////////////////////////////////////////////////
 
+
+    const closeWarningHandler =(e)=>{
+      e.preventDefault();
+      setError(null);
+    }
+    
+
+
+
+
+
  //<button className={isVisible ? "invisiblebutton" : 'registerbutton'} onClick={makeVisible}>{isVisible ? 'Close' : 'Register'} </button>
 
    return(
         <div>
+
+
+
+      {!error?
+      <div className="register">
      <form className= {isVisible ? 'makeVisibile' : 'makeInvisible'} id="registerForm">
 
     <label className="usernameLabel"> UserName :</label>
@@ -88,6 +120,9 @@ setName('');
         <input className="regsubButton" onClick={submitHandler} type="submit" value="Register" />
       <div>  <button className={isVisible ? "closeButton" : 'makeInvisible'} onClick={makeInvisible}>X</button></div>
    </form>
+  </div> :<div className="warning"> <div className="warningPrompt">  {error}<div><button name='okbutton' onClick={closeWarningHandler}>Ok</button>
+      </div>
+      </div></div>}
    </div>
     )
 }

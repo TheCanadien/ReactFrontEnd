@@ -1,0 +1,42 @@
+.calGraph{
+    padding-right: 1vw;
+    padding-top: 2.5vh;
+    padding-left: 2vw;
+    width: 27.5vw;
+    height: 36.5vh;
+    border: solid 0.2vw;
+    margin-right: 1vw;
+    border-radius: 0.5vw;
+    margin-left: 0.25vw;
+    margin-top: 0.25vh;
+}
+
+.graphsdiv{
+    display: flex
+}
+
+.weightGraph{
+    padding-right: 1vw;
+    padding-top: 2.5vh;
+    padding-left: 1vw;
+    width: 27.5vw;
+    height: 36.5vh;
+    border: solid 0.2vw;
+    margin-right: 1vw;
+    border-radius: 0.5vw;
+    margin-top: 0.25vh;
+}
+
+.grapherror{
+    padding: 10vh;
+    font-weight: bold;
+    font-size: 4vh;
+    border: solid black 0.3vh;
+    -webkit-box-shadow: 16px 14px 15px 5px #000000; 
+    box-shadow: 16px 14px 15px 5px #000000; 
+    margin-right: 15vw;
+    margin-top:3vh;
+    border-radius: 0.5vh;
+    width: 20vw;
+    background:  rgba(69,226,238,0.4741246840533089);
+}

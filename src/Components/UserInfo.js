@@ -5,7 +5,7 @@ import Graph from './Graph';
 import {useNavigate} from 'react-router-dom';
 
 
-const UserInfo =({userData, setUserData, date, setDate})=>{
+const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
     let navigate = useNavigate();
@@ -14,6 +14,8 @@ const UserInfo =({userData, setUserData, date, setDate})=>{
     const [heightexists, setHeightExists] = useState(false);
     const [weightexists, setWeightExists] = useState(false);
   const [userData1, setUserData1] = useState({});
+  const [error, setError] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
 
  
      useEffect(()=>{
@@ -49,9 +51,22 @@ const UserInfo =({userData, setUserData, date, setDate})=>{
           }
          })
          .catch(error => {
-             console.log(error.response);
-             if(error.response.data === 'Access Denied'){
+             let message = error;
+             console.log(message);
+             if(!message.response){
+               console.log('Error: Can not connect to network');
+              setError('Error: Connection refused');
+             }  
+             else{ 
+             if(message.response !== undefined && message.response.data === 'Access Denied'){
               navigate('/');
+             }
+             else{
+               setError(message.response.status + " " +  message.response.statusText);
+             }
+
+
+
              }
          })
       
@@ -95,7 +110,20 @@ const UserInfo =({userData, setUserData, date, setDate})=>{
         setUserData(res.data);
        })
        .catch(error => {
-           console.log(error.response);
+        let message = error;
+        if(!message.response){
+          console.log('Error: Can not connect to network');
+         setSubmitError('Error: Connection refused');
+        }
+        else{
+          if(message.response !== undefined && message.response.data === 'Access Denied'){
+            navigate('/');
+           }
+          else{    
+         setSubmitError(message.response.status + " " + message.response.statusText);
+          }
+        }  
+        
        })
         setEdit(false);
      }
@@ -127,13 +155,39 @@ localStorage.removeItem('token');
 navigate('/');
 }
 
+const closeErrorHandler =(e)=>{
+  e.preventDefault();
+  setError(null);
+  getStuff();
+}
+
+const userInfoErrorHandler =(e)=>{
+  e.preventDefault();
+  setError(null);
+  getStuff();
+}
+
+const editUserInfoErrorHandler =(e)=>{
+  e.preventDefault();
+  setSubmitError(null);
+}
 
 
 return(
+
+
+
+
 <div className="editText">
+
   <div>
-  {<Graph userData={userData} date={date}/>}
+  {<Graph userData={userData} date={date} updateGraph={updateGraph}/>}
   </div>
+
+{!submitError?
+<div>
+{!error?
+<div className="infoDiv">
 <div name="auser" className="user">
        <div>Username: {userData.username}</div>
        <div>Profile Public: {JSON.stringify(userData.public)}</div>
@@ -143,11 +197,17 @@ return(
       {bdayexists? <div>Birthdate: {userData.birthday.substring(0,10)}</div> : <div>Birthdate: </div>}
        {heightexists && weightexists? <div>BMI: {((userData.weight/userData.height**2)*703).toFixed(2)}</div>:<div>BMI: </div>} 
         </div>
-
   <div className= "editdiv">
 <button name="editbutton" onClick= {editForm}>Edit </button>
 <button onClick={signoutHandler} className="signout">Sign out</button>
 </div>
+</div>:<div><div name="infoErrorDiv">{error}<div><button onClick={userInfoErrorHandler}name="okbutton">OK</button></div></div></div>}
+</div>:<div><div name="submitError">{submitError}<div><button onClick={editUserInfoErrorHandler}name="okbutton">OK</button></div></div></div>}
+
+
+
+
+<div>
 <form className = {edit? "editVisible" : "invisible"} >
     <label> Birthdate:
    </label>   
@@ -174,6 +234,9 @@ return(
     <input className="infosub" onClick={submitHandler} type="submit" value="Submit"  disabled= {edit? "" : "disabled"} />
     </div>
    </form>
+</div>
+
+
    </div>
 )
 }

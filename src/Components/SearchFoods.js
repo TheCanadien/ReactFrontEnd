@@ -12,6 +12,7 @@ const [selected, setSelected] = useState(false);
 const [numberofgrams, setNumberOfGrams] = useState(100); 
 const [quantities, setQuantities] = useState([]);
 const [gramschanged, setGramsChanged] = useState(100);
+const [error, setError] = useState(null);
 
 const searchFoodsHandler = (e)=>{
   //console.log(e.target.value)  
@@ -21,23 +22,34 @@ const searchFoodsHandler = (e)=>{
 
    const submitHandler =(e)=>{
     e.preventDefault();
+    setError(null);
    // console.log('button hit');
     //console.log(searchFood);
     if(searchFood !== ''){
 
-   axios.get(`http://52.4.202.130:8080/api/foods/${searchFood}/`)
+  axios.get(`http://52.4.202.130:8080/api/foods/${searchFood}/`)
     .then(res => {
-      console.log(res.data);
+      console.log(res);
       setFoundFoods(res.data);
     ///////////////////////////
    })
    .catch(error => {
        console.log(error.response);
+       let message = error;
+       if(!message.response){
+         console.log('Error: Can not connect to network');
+        setError('Error: Connection refused');
+       }
+       else{
+        setError(message.response.status + " " + message.response.statusText);
+       }  
+
+
    })
   }
    }
 
-   const clickHandler = (e, item)=>{
+const clickHandler = (e, item)=>{
 console.log(item);
 setSelected(true);
 setNumberOfGrams(100);
@@ -115,6 +127,11 @@ const submitGramsHandler = (e)=>{
     setGramsChanged(numberofgrams);
 }
 
+const closeWarningHandler =(e)=>{
+  e.preventDefault();
+  setError(null);
+}
+
 
 
 
@@ -124,6 +141,9 @@ const submitGramsHandler = (e)=>{
 
     return(
         <div className="searchFoods" id="formdiv">
+
+
+          {!error?<div>
             <form  id={fooddetails.food_type}>
                 <label className="searchFoodLabel"><h1>Search for Food info:</h1></label>
                 <input id="fooddetails" className="foodsearch" value={searchFood} type="text" onChange={searchFoodsHandler}></input>
@@ -168,7 +188,9 @@ const submitGramsHandler = (e)=>{
 
           
 
-
+</div>:<div> <div className="searchError">  {error} <div ><button name='okbutton' onClick={closeWarningHandler}>Ok</button>
+      </div>
+      </div></div>}
 
         </div>
     )

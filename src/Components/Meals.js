@@ -2,9 +2,12 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import '../Meals.scss'
 import SearchFoods from './SearchFoods';
+//////////////////////////////////////////////
 
 
-const Meals = ({userData, setUserData, date, setDate})=>{
+
+
+const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>{
 
 
 
@@ -18,7 +21,7 @@ const Meals = ({userData, setUserData, date, setDate})=>{
    const [totalCalories, setTotalCalories] = useState(0);
    const [emptyedit, setEmptyEdit] = useState(false);
    const [maxdate, setMaxDate] = useState(0);
-
+   const [error, setError] = useState(null);
 
 
     useEffect(()=>{
@@ -26,7 +29,7 @@ const Meals = ({userData, setUserData, date, setDate})=>{
        setMaxDate(date);
       getMeals();
     }
-          },[userData]);
+          },[userData, date]);
 
 const getMeals = async () =>{
  //  console.log('calling getMeals');
@@ -37,13 +40,14 @@ const getMeals = async () =>{
  }} )
    .then(res => {
 
-    //console.log(res);
+    console.log(res);
     if(res.data.length === 0){
        // console.log('nada');
     //    console.log(res.data);
         setMealsExist(false);
         setDailyWeight(0);
         setWeight(0);
+        setTotalCalories(0);
      }
      else{
     const fooddata = res.data.food_item;
@@ -76,6 +80,7 @@ const getMeals = async () =>{
   })
   .catch(error => {
       console.log(error.response);
+      //setError(error.response);
   })
 };
      
@@ -85,6 +90,11 @@ const getMeals = async () =>{
         getMeals();
     }
     
+
+
+
+
+
     const dateHandler = (e)=>{
       console.log('date is changing');
       setDate(e.target.value);
@@ -163,9 +173,25 @@ setEmptySubmit(false);
     setCalories(0);
     setFoodDescription('');
     setWeight(0);
+///////////////////////////////////////////////////////////////////////
+
+setUpdateGraph(!updateGraph);
+///////////////////////////////////////////////////////////////////////////
    })
    .catch(error => {
-       console.log(error.response);
+
+
+    console.log(error.response);
+    let message = error;
+    if(!message.response){
+      console.log('Error: Can not connect to network');
+     setError('Error: Connection refused');
+    }
+    else{
+     setError(message.response.status + " " + message.response.statusText);
+    }  
+
+
    })
   }
   else{
@@ -196,9 +222,23 @@ setEmptySubmit(false);
    
        setCalories(0);
        setFoodDescription('');
+/////////////////////////////////////////////////////   
+       setUpdateGraph(!updateGraph);
+ ///////////////////////////////////////
        })
        .catch(error => {
-           console.log(error.response);
+         
+        console.log(error.response);
+        let message = error;
+        if(!message.response){
+          console.log('Error: Can not connect to network');
+         setError('Error: Connection refused');
+        }
+        else{
+         setError(message.response.status + " " + message.response.statusText);
+        }  
+    
+
        })
     }
 
@@ -299,6 +339,12 @@ console.log(updated);
       }))
       setEditCal(0);
       setEditFood('');
+/////////////////////////////////////////////////////////////
+setUpdateGraph(!updateGraph);
+///////////////////////////////////////////////////////////
+
+
+
  })
  .catch(error => {
      console.log(error.response);
@@ -351,8 +397,8 @@ axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/
    array.pop();
    setFoodItem(array);
    setTotalCalories(parseInt(totalCalories)- parseInt(reducecals));
-
-
+/////////////////////////////////////////
+setUpdateGraph(!updateGraph);
   ///////////////////////////
  })
  .catch(error => {
@@ -373,7 +419,11 @@ if(fooditem.length ===1){
      array.pop();
      setFoodItem(array);
      setMealsExist(false);
-  
+     setDailyWeight(0);
+     setWeight(0);
+     setTotalCalories(0);
+     /////////////////////////////////////
+     setUpdateGraph(!updateGraph);
     ///////////////////////////
    })
    .catch(error => {
@@ -383,27 +433,43 @@ if(fooditem.length ===1){
 
 }
 
+const [weightError, setWeightError] = useState(null);
 const [weightprompt, setWeightPrompt] = useState(false);
 const submitWeightHandler = (e)=>{
   e.preventDefault();
 
   if(mealsexist){
+
+
+
   const addWeight = {"weight" : weight}
   console.log(addWeight);
   setWeightPrompt(false);
 
-
+  
   axios.patch(`http://52.4.202.130:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken
   }} )
     .then(res => {
     console.log(res);
-    setDailyWeight(weight);
+    setDailyWeight(parseInt(weight,10));
     setWeight(0);
+///////////////////////////////////
+setUpdateGraph(!updateGraph);
+////////////////////////////////////////
    })
    .catch(error => {
-       console.log(error.response);
+      
+    let message = error;
+    if(!message.response){
+      console.log('Error: Can not connect to network');
+     setWeightError('Error: Connection refused');
+    }
+    else{
+     setWeightError(message.response.status + " " + message.response.statusText);
+    }  
+    
    })
   }
   else{
@@ -412,16 +478,32 @@ const submitWeightHandler = (e)=>{
 
 }
 
+
+const weightErrorWarningHandler=(e)=>{
+  e.preventDefault();
+  setWeightError(null);
+}
+
+
+const submitErrorHandler =(e)=>{
+  e.preventDefault();
+  setError(null);
+}
+
+
+
+
 const promptHandler =(e)=>{
   e.preventDefault();
   setEmptySubmit(!emptysubmit);
 }
 
+/*
 const editPromptHandler = (e)=>{
   e.preventDefault();
   setEmptyEdit(!emptyedit);
 }
-
+*/
 const weightPromptHandler = (e)=>{
   e.preventDefault();
   setWeightPrompt(!weightprompt);
@@ -431,7 +513,14 @@ const weightPromptHandler = (e)=>{
 
     return (
         <div  className="fooddiv">  
-         <div className="leftside"><h1 className="mealinfoheader">Enter Meal Info</h1>
+
+
+
+
+         <div className="leftside">
+           {!error?
+           <div>
+           <h1 className="mealinfoheader">Enter Meal Info</h1>
          <p name="mealp">Meal {mealsexist? (fooditem.length +1) : "1"}:  </p>
       {!emptysubmit?<form name="foodsubform">   
  
@@ -448,6 +537,10 @@ const weightPromptHandler = (e)=>{
       :<div className="prompt"><p>Food Description can not be blank</p><p>and calories must be greater than 0</p>
         <div><button onClick={promptHandler}>OK</button></div>
         </div>}
+        </div>:<div><div className="mealsuberror">{error}<button name='okbutton' onClick={submitErrorHandler}>Ok</button></div></div>}
+
+
+
 
       <SearchFoods/>
       </div>
@@ -455,12 +548,17 @@ const weightPromptHandler = (e)=>{
         <div className="meals" >
             <h1>{dateChanged}</h1>
             <div className="totalcals">Total Daily Calories: {totalCalories}</div>
-            <form>
+           <form>
           {/*<label name="date">Date: </label>*/}
           <input className="inputdate" value={date} type='date' onChange={dateHandler} max ={maxdate}></input>
           <button onClick={datesubmitHandler} className="changeDate" >Change Date</button>
-          
-       {!weightprompt?   <div name="bodyweightdiv">
+          </form>
+
+       {!weightError?
+       <div>
+          <form>    
+       {!weightprompt?  
+       <div name="bodyweightdiv">
           <label name="currentweight">
           Daily Bodyweight in lbs: {dailyWeight}
             </label> 
@@ -468,10 +566,12 @@ const weightPromptHandler = (e)=>{
          <button className= "weightsbutton" onClick={submitWeightHandler}>Submit</button>
          </div>
         :<div className="weightprompt">Must submit a meal before weight can be saved
-        <div onClick={weightPromptHandler}><button>X</button></div>
+        <div onClick={weightPromptHandler}><button>X</button></div> 
         </div>}
-
+ 
            </form>
+           </div>:<div className="weightError">{weightError} <div ><button name='okbutton' onClick={weightErrorWarningHandler}>Ok</button></div></div>}
+           
             {mealsexist?
                <div>{/*entryInfo.weight*/}  
        <div className="entrydiv" >

@@ -191,3 +191,44 @@ button{
     padding-top: 2vh;
     font-weight: bold;
 }
+
+.warning{
+    height: 38vh;
+}
+
+.warningPrompt{
+    border: 0.5vh solid black;
+    width: 30vw;
+    height: 15vh;
+    font-weight: bold;
+    margin-left: 30vw;
+    font-size: 3.5vh;
+    margin-top: 15vh;
+    padding-bottom: 2vw;
+    padding-top: 5vh;
+    border-radius: 0.5vh;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+[name=okbutton]{
+    margin-left:1vw;
+}
+
+.homediv{
+    height:82vh;
+}
+
+.homeError{
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
+    height: 60vh;
+    padding-bottom: 30vh;
+    margin-bottom: -20vh;
+}
+
+.homeErrorMessage{
+    font-weight: bold;
+    padding-top: 45vh;
+    font-size: 6vh;
+}

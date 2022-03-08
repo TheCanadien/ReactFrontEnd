@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import UserInfo from './UserInfo';
 import Meals from './Meals';
 import '../User.scss';
+
+
 
 
 const User = () =>{
@@ -26,13 +28,26 @@ const createDateString = () =>{
 const [userData, setUserData] = useState({});
 const todaysdate = createDateString();
 const [date, setDate] = useState(todaysdate);
+const [updateGraph, setUpdateGraph] = useState(false);
+
 //////////////////////////////////////////////////////////////////////////////
+
 
     return (
         <div className="userpage">
-       <UserInfo userData={userData} setUserData={setUserData} date={date} setDate={setDate} />
+
+       <div>   
+       <UserInfo userData={userData} setUserData={setUserData} date={date} setDate={setDate}
+         updateGraph= {updateGraph}
+       />
+      </div>
+     
+
+
        <div>
-        <Meals userData={userData} setUserData={setUserData}  date={date} setDate={setDate}/>
+        <Meals userData={userData} setUserData={setUserData}  date={date} setDate={setDate} 
+          updateGraph={updateGraph} setUpdateGraph={setUpdateGraph}
+        />
         </div>
         </div>
     )

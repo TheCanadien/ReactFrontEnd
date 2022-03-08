@@ -3,16 +3,16 @@ import {Line} from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
 import 'chartjs-adapter-date-fns';
-import { setDate } from 'date-fns';
+//import { setDate } from 'date-fns';
+import '../Graph.scss';
 
 
-
-const Graph = ({userData, date}) =>{
+const Graph = ({userData, date, updateGraph}) =>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
     const [currentdate, setCurrentDate] = useState(null);
     const [previousdate, setPreviousDate] = useState(null);
-
+    const [error, setError] = useState(null);
 
 
     useEffect(()=>{
@@ -27,7 +27,7 @@ const Graph = ({userData, date}) =>{
       getMeals();
     
 
-    },[userData]);
+    },[userData, updateGraph]);
 
  
 
@@ -51,14 +51,9 @@ const Graph = ({userData, date}) =>{
     }
 
 
-   // console.log(createDateString());
 
-      console.log(currentdate);
-      console.log(previousdate);
+    //  console.log(currentdate);
      // console.log(previousdate);
-       //const test = new Date(Date.now());
-     //  test.setDate(-60);
-      //console.log(test);
 
 
 
@@ -66,23 +61,12 @@ const Graph = ({userData, date}) =>{
 
 
 
+    const [weightdata, setWeightData] = useState([]);
+    const [caloriedata, setCalorieData] = useState([]);
 
 
 
     const getMeals = async () =>{
-
-        console.log('calling getMeals');
-      
-
-
-     
-
-        console.log(currentdate);
-        console.log(previousdate);
-
-
-
-
 
        if(previousdate !== null && currentdate !== null && userData.username !== undefined){
 
@@ -91,15 +75,46 @@ const Graph = ({userData, date}) =>{
         "Authorization" : atoken
       }} )
         .then(res => {
-          console.log(res);
-          console.log('here');
+      //    console.log(res);
+     
+        const mealdata = res.data;
+        let weights = [];
+        let calories = [];
+        if(res.data.length > 0)
+        {
+        mealdata.forEach(item=>{
+        if(item.weight !==undefined){
+          weights.push({x: item.date.substring(0,10), y: item.weight});
+        }
+        calories.push({x: item.date.substring(0,10), y: item.total_calories},);
+
+        })
+        setWeightData(weights);
+        setCalorieData(calories);        
+      }
         })
         .catch(error=>{
+    
           console.log(error.response);
+          let message = error;
+          if(!message.response){
+            console.log('Error: Can not connect to network');
+           setError('Error: Connection refused');
+          }
+          else{
+           setError(message.response.status + " " + message.response.statusText);
+          }  
+         console.log(error);
         });
       }
 
 
+    }
+
+    const closeErrorHandler = (e) =>{
+      e.preventDefault();
+      setError(null);
+      getMeals();
     }
 
 
@@ -115,29 +130,36 @@ const Graph = ({userData, date}) =>{
       console.log(e.target.value);
    }
 
+   
+   const weightstate = {
+    datasets: [
+      {
+        label: 'Daily Weight',
+        fill: false,
+        lineTension: 0.5,
+        borderWidth: 2,
+        data: weightdata,     
+        pointBorderColor: 'red',
+        pointBackgroundColor: 'black',
+        borderColor: 'black',
+      }
+    ]
+  }
 
-
-
-
-
-
-
-    const state = {
-        labels: ['January', 'February', 'March',
-                 'April', 'May'],
+    const calstate = {
         datasets: [
           {
-            label: 'Rainfall',
+            label: 'Daily Calories',
             fill: false,
             lineTension: 0.5,
-            backgroundColor: 'rgba(75,192,192,1)',
-            borderColor: 'rgba(0,0,0,1)',
             borderWidth: 2,
-            data: [65,1, 359, 80, 81, 56]
+            data: caloriedata,     
+            pointBorderColor: 'red',
+            pointBackgroundColor: 'black',
+            borderColor: 'black',
           }
         ]
       }
-
 
 
     return(
@@ -153,23 +175,70 @@ const Graph = ({userData, date}) =>{
 </div>
  }
 
+{!error?
+<div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
-            <Line
-        data={state}
+         <div className="graphsdiv">
+            <div className="calGraph" >
+            <Line 
+        data={calstate}
         options={{
-          title:{
-            display:true,
-            text:'Average Rainfall per month',
-            fontSize:20
+          scales:{
+            x:{
+              type: 'time',
+              time:{
+                unit: 'day'
+              }
+            },
+            y:{
+              beginAtZero: true
+            }
           },
-          legend:{
-            display:true,
-            position:'right'
-          }
+           maintainAspectRatio: false,
         }}
-      /></div>
+      />
+      </div>
+
+      <div className="weightGraph" >
+            <Line 
+        data={weightstate}
+        options={{
+          scales:{
+            x:{
+              type: 'time',
+              time:{
+                unit: 'day'
+              },
+            },
+            y:{
+              beginAtZero: true
+            }
+          },
+           maintainAspectRatio: false,
+       
+        }}
+      />
+      </div>
+      </div>
+      </div>:
+      <div><div className="grapherror">{error}<div><div><button onClick={closeErrorHandler}name='okbutton' >Ok</button></div>
+
+
+
+      </div>
+      </div></div>}
+
+
+
+
+
+
+      
+      </div>
+
+
     )
 }
 

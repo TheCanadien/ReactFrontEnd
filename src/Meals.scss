@@ -255,15 +255,11 @@ input.inputeditcalories{
 
 .prompt{
     font-weight: bold;
-    background-image: linear-gradient(
-        45deg,
-        hsl(350deg 100% 37%) 0%,
-        hsl(353deg 87% 35%) 11%,
-      );
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
       border-radius: 1vh;
       padding: 2vh;
       border: solid black;
-      color: white;
+      color: black;
       
 }
 
@@ -271,14 +267,38 @@ input.inputeditcalories{
     font-weight: bold;
     margin-top: 2vh;
     font-size: 3vh;
-    background-image: linear-gradient(
-        45deg,
-        hsl(350deg 100% 37%) 0%,
-        hsl(353deg 87% 35%) 11%,
-      );
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
       border-radius: 1vh;
       padding: 3vh;
       border: solid black;
-      color: white;
+      color: black;
       
+}
+
+.weightError{
+    height: 12vh;
+    width: 40vw;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
+    border-radius: 1vh;
+    padding: 3vh;
+    border: solid black;
+    color: black;
+    margin-top: 2vh;
+    margin-left: 5vw;
+    font-weight: bold;
+    font-size: 3vh;
+    overflow-y: auto;
+
+}
+
+.mealsuberror{
+    font-weight: bold;
+    font-size: 4vh;
+    padding-top: 3vh;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
+    margin-top: 2vh;
+    height: 20vh;
+    border-radius: 0.5vh;  
+    border: solid black;
+    overflow-y: auto;
 }

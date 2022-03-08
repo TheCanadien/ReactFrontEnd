@@ -90,3 +90,19 @@
     padding-right: 1vw;
     padding-bottom: 1vh;
 }
+
+.searchError{
+    color: black;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(69,226,238,0.4741246840533089) 100%);
+    padding-top:6vh;
+    text-align: center;
+    margin-top: 5vh;
+    font-size: 3vh;
+    padding-bottom: 6vh;
+    border-radius: 0.5vh;
+    flex: 1;
+    font-weight: bold;
+    -webkit-box-shadow: 16px 14px 15px 5px #000000; 
+    box-shadow: 16px 14px 15px 5px #000000;
+    overflow-y: auto;
+}

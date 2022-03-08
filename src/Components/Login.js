@@ -9,13 +9,13 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
  const [password, setPassword] = useState('');
  const [name, setName] = useState('');
  let navigate = useNavigate();
-
+ const [error, setError] = useState(null);
 
 
   const submitHandler = (e) =>{
   e.preventDefault();
   console.log(userName);
-
+    setError(null);
   ///////////////////////////////////////////////////////
 
 
@@ -45,11 +45,32 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
           
         })
         .catch(error => {
-            console.log(error.response);
+          let message = error;
+          if(!message.response){
+            console.log('Error: Can not connect to network');
+           setError('Error: Connection refused');
+          }  
+          else{
+          console.log(error.response);
+          console.log(error.response);
+          (console.log(error.response.data));
+          if(message.response.status === 400){
+          setError(message.response.data.replaceAll('"', ''));
+          }
+          else{
+            setError(message.response.status + " " + message.response.statusText);
+          }
+        }
         })
 
     
   }
+
+const closeWarningHandler =(e)=>{
+  e.preventDefault();
+  setError(null);
+}
+
 
 
   const makeVisible= (e) =>{
@@ -73,6 +94,7 @@ const passHandler = (e)=>{
 
     return(
         <div>
+          {!error?<div className="login"> 
         <form className= {isVisible ? 'makeOpaque' : ''} name="logform">  
       <label className="logUserLabel">UserName :</label>
        <div> <input value={name} onChange={userHandler} type="text" name="uname"  disabled=   {isVisible ? "disabled" : ''}                 
@@ -88,6 +110,10 @@ const passHandler = (e)=>{
         <button className={isVisible ? "invisiblebutton" : 'registerbutton'} onClick={makeVisible}
         disabled=   {isVisible ? "disabled" : ''}>Register</button> 
       </form>
+      </div>
+      :<div className="warning"> <div className="warningPrompt">  {error}<div><button name='okbutton' onClick={closeWarningHandler}>Ok</button>
+      </div>
+      </div></div>}
       </div>
     )
 }
