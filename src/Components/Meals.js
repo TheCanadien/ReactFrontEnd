@@ -2,38 +2,40 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import '../Meals.scss'
 import SearchFoods from './SearchFoods';
-//////////////////////////////////////////////
+import {useNavigate} from 'react-router-dom';
 
 
+const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>
+{
 
-
-const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>{
-
-
-
-   // const [entryInfo, setEntryInfo] = useState({});
+  let navigate = useNavigate();
     const atoken = JSON.parse(localStorage.getItem('token'));
     const [fooditem, setFoodItem] = useState([]);
     const [mealsexist, setMealsExist] = useState(false);
     const [dateChanged, setDateChanged] = useState(date);
-  //  const [editfooditem, setEditFoodItem] = useState([]);
    const [dailyWeight, setDailyWeight] = useState(0);
    const [totalCalories, setTotalCalories] = useState(0);
    const [emptyedit, setEmptyEdit] = useState(false);
    const [maxdate, setMaxDate] = useState(0);
    const [error, setError] = useState(null);
+   const [mealserrors, setMealsErrors] = useState(null);
 
 
-    useEffect(()=>{
+
+
+
+   //Default get meal data for current date
+    useEffect(()=>
+    {
      if(userData.username !== undefined){
        setMaxDate(date);
       getMeals();
     }
           },[userData, date]);
+//
+const getMeals = async () =>
+{
 
-const getMeals = async () =>{
- //  console.log('calling getMeals');
-   //console.log(userData.username);
     await axios.get(`http://52.4.202.130:3000/entry/${date}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken
@@ -63,7 +65,6 @@ const getMeals = async () =>{
      }
     })
 
-    //setFoodItem(res.data.food_item);
     setFoodItem(fooddata);
     if(res.data.weight !== null){
     setDailyWeight(res.data.weight);
@@ -72,45 +73,43 @@ const getMeals = async () =>{
     else{
       setDailyWeight(0);
     }
-
-    //console.log(res);
     setMealsExist(true);
-    // setEntryInfo(res.data)
      }
   })
   .catch(error => {
       console.log(error.response);
-      //setError(error.response);
+    
+      let message = error;
+      if(!message.response){
+        console.log('Error: Can not connect to network');
+       setMealsErrors('Error: Connection refused');
+      }
+      else{
+        if(message.response !== undefined && message.response.data === 'Access Denied'){
+          navigate('/');
+         }
+        else{    
+       setMealsErrors(message.response.status + " " + message.response.statusText);
+        }
+      }  
+
   })
 };
      
+//Retrieve meal data for new date
       const datesubmitHandler =(e) =>{
         e.preventDefault();
         setDateChanged(date);
         getMeals();
     }
     
-
-
-
-
-
-    const dateHandler = (e)=>{
-      console.log('date is changing');
+    const dateHandler = (e)=>
+    {
       setDate(e.target.value);
   }
 
- //fooditem.forEach(element => console.log(element));
-
-
-
-
-
-
-
 
 const [calories, setCalories] = useState(0);
-
 const inputCaloriesHandler =(e)=>{
  console.log(e.target.value);
   setCalories(e.target.value);
@@ -142,59 +141,50 @@ const addmeal =
 
 const  [emptysubmit, setEmptySubmit] = useState(false);
 
-
-
+//Add meal data
 const submitHandler =(e) =>{
   e.preventDefault();
 if(foodDescription !== '' && calories !== 0)
 {
 setEmptySubmit(false);
 
-
-  if(!mealsexist){
+//If first meal for the given date, post to database
+  if(!mealsexist)
+  {
   axios.post('http://52.4.202.130:3000/entry/', addmeal, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken
   }} )
-    .then(res => {
-    console.log(res.data);
+    .then(res =>
+       {
     setMealsExist(true);
-
     const foodinfo = res.data.food_item;
     foodinfo[0].edit = false;
     foodinfo[0].deletable = true;
-   // console.log(foodinfo);
-
-
-   //setFoodItem(res.data.food_item);
     setFoodItem(foodinfo);
     setTotalCalories(addmeal.food_item[0].calories);
-
     setCalories(0);
     setFoodDescription('');
     setWeight(0);
-///////////////////////////////////////////////////////////////////////
-
+  
+//Update graph based on recent db submission
 setUpdateGraph(!updateGraph);
-///////////////////////////////////////////////////////////////////////////
    })
-   .catch(error => {
+   .catch(error => 
+    {
 
-
-    console.log(error.response);
     let message = error;
-    if(!message.response){
-      console.log('Error: Can not connect to network');
+    if(!message.response)
+    {
      setError('Error: Connection refused');
     }
     else{
      setError(message.response.status + " " + message.response.statusText);
     }  
-
-
    })
   }
   else{
+    //If one meal already exists in db for that date, patch to add another
     delete addmeal.date;
     const nextmealnumber = fooditem.length + 1;
     addmeal.food_item[0].meal_number = nextmealnumber;
@@ -203,82 +193,55 @@ setUpdateGraph(!updateGraph);
         "Authorization" : atoken
       }} )
         .then(res => {
-        console.log(res.data);
-        console.log(nextmealnumber-1);
-        console.log('does exist');
-
-        ///////////////////////////////////////////////////////////
-        const fooddata =  res.data.food_item[nextmealnumber-1]
-        
-         fooddata.edit = false;
-         fooddata.deletable = true;
-      console.log(fooddata);
-       let array = fooditem.map(item=>{
+        const fooddata =  res.data.food_item[nextmealnumber-1];
+        fooddata.edit = false;
+        fooddata.deletable = true;
+     let array = fooditem.map(item=>
+      {
          return {...item, deletable: false}
        })
-        setFoodItem([...array, fooddata]);
-        setTotalCalories(parseInt(totalCalories) + parseInt(addmeal.food_item[0].calories));
-      console.log('here');
-   
+       setFoodItem([...array, fooddata]);
+       setTotalCalories(parseInt(totalCalories) + parseInt(addmeal.food_item[0].calories));
        setCalories(0);
        setFoodDescription('');
-/////////////////////////////////////////////////////   
        setUpdateGraph(!updateGraph);
- ///////////////////////////////////////
        })
-       .catch(error => {
-         
-        console.log(error.response);
+       .catch(error =>
+         {
         let message = error;
-        if(!message.response){
-          console.log('Error: Can not connect to network');
+        if(!message.response)
+        {
          setError('Error: Connection refused');
         }
-        else{
+        else
+        {
          setError(message.response.status + " " + message.response.statusText);
         }  
-    
-
        })
     }
-
-    fooditem.map(item=>
-      console.log(item));
     }
-    else{
+    else
+    {
     setEmptySubmit(true);   
   }
-
-
-
-
-
-
   }
 
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-
 const [editCal, setEditCal] = useState(0);
-const editCaloriesHandler = (e) =>{
+const editCaloriesHandler = (e) =>
+{
  console.log(e.target.value);
  setEditCal(e.target.value);
 } 
 const [editFood, setEditFood] = useState('');
-const editFoodHandler = (e) =>{
+const editFoodHandler = (e) =>
+{
   console.log(e.target.value);
   setEditFood(e.target.value);
 }
 
-
-
-
-const foodEditHandler = (e, itemid) =>{
+const foodEditHandler = (e, itemid) =>
+{
   e.preventDefault();
- // console.log(itemid);
-  //setIsSelected(!isSelected);
-  //console.log(isSelected); 
    setFoodItem(fooditem.map(item=> {
     if(item._id === itemid){
       return {...item, edit: !item.edit}
@@ -288,20 +251,16 @@ const foodEditHandler = (e, itemid) =>{
 
 }
 
-const submitEditHandler = (e, item) =>{
+//Edit meal data
+const submitEditHandler = (e, item) =>
+{
  e.preventDefault();
 
-if(editFood !== '' && editCal !== 0 ){
+if(editFood !== '' && editCal !== 0 )
+{
  setEmptyEdit(false);
  let previousCal = 0;
-/*
- fooditem.map(items=>{
-    if(items._id === item._id ){
-      console.log(items);
-      previousCal = items.calories;
-    }
- })
-*/
+
 const found = fooditem.find(items => items._id === item._id)
   previousCal = found.calories;
 
@@ -317,20 +276,13 @@ const updated = {
   }],
  
 }
-console.log(updated);
-/////////////////////////////////
 
-
-///////////////////////
  axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
   "content-type": "application/json",
   "Authorization" : atoken
 }} )
   .then(res => {
-    console.log(res);
-    ///////////////////////////
-
-    setFoodItem(fooditem.map(items=> {
+     setFoodItem(fooditem.map(items=> {
       if(items._id === item._id){
         setTotalCalories(parseInt(totalCalories) -parseInt(previousCal) +parseInt(updated.food_item[0].calories));
         return {...items, calories: editCal, food_description: editFood, edit:false} 
@@ -339,15 +291,24 @@ console.log(updated);
       }))
       setEditCal(0);
       setEditFood('');
-/////////////////////////////////////////////////////////////
-setUpdateGraph(!updateGraph);
-///////////////////////////////////////////////////////////
-
-
+      setUpdateGraph(!updateGraph);
 
  })
  .catch(error => {
-     console.log(error.response);
+  let message = error;
+  if(!message.response)
+  {
+    console.log('Error: Can not connect to network');
+   setMealsErrors('Error: Connection refused');
+  }
+  else{
+    if(message.response !== undefined && message.response.data === 'Access Denied'){
+      navigate('/');
+     }
+    else{    
+   setMealsErrors(message.response.status + " " + message.response.statusText);
+    }
+  } 
  })
 }
 else{
@@ -356,26 +317,14 @@ else{
 
 }
 
+//Delete a meal from list
 const deleteFoodHandler = (e, item) =>{
   console.log(item);
  e.preventDefault();
-///////////////////////////////////////////////////////////////////////////////////////
-let reducecals = 0;
-/*
-fooditem.map(items=>{
-   if(items._id === item._id ){
-     console.log(items);
-     reducecals = items.calories;
-   }
-})
-*/
+ let reducecals = 0;
+
 const found = fooditem.find(items => items._id === item._id)
   reducecals = found.calories;
-
-
-
-
-
 
 if(fooditem.length >1){
 axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"reducecals": reducecals}, { headers:{
@@ -383,10 +332,6 @@ axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/
   "Authorization" : atoken
 }} )
   .then(res => {
-    console.log(res);
-    //console.log(atoken);
-    ///////////////////////////
-  
    let array = fooditem.map((items, index)=>{
     if(index === fooditem.length-2){
       return {...items, deletable:true}
@@ -397,24 +342,33 @@ axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/
    array.pop();
    setFoodItem(array);
    setTotalCalories(parseInt(totalCalories)- parseInt(reducecals));
-/////////////////////////////////////////
-setUpdateGraph(!updateGraph);
-  ///////////////////////////
- })
+   setUpdateGraph(!updateGraph);
+    })
  .catch(error => {
-     console.log(error.response);
+  
+  let message = error;
+  if(!message.response)
+  {
+   setMealsErrors('Error: Connection refused');
+  }
+  else{
+    if(message.response !== undefined && message.response.data === 'Access Denied'){
+      navigate('/');
+     }
+    else{    
+   setMealsErrors(message.response.status + " " + message.response.statusText);
+    }
+  } 
+
  })
 }
+//Delete entire object for date if only one meal is left
 if(fooditem.length ===1){
   axios.delete(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken
   }} )
     .then(res => {
-      console.log(res);
-     // console.log(atoken);
-      ///////////////////////////
-    
      let array = fooditem;
      array.pop();
      setFoodItem(array);
@@ -422,12 +376,23 @@ if(fooditem.length ===1){
      setDailyWeight(0);
      setWeight(0);
      setTotalCalories(0);
-     /////////////////////////////////////
      setUpdateGraph(!updateGraph);
-    ///////////////////////////
    })
    .catch(error => {
-       console.log(error.response);
+    
+    let message = error;
+      if(!message.response)
+      {
+       setMealsErrors('Error: Connection refused');
+      }
+      else{
+        if(message.response !== undefined && message.response.data === 'Access Denied'){
+          navigate('/');
+         }
+        else{    
+       setMealsErrors(message.response.status + " " + message.response.statusText);
+        }
+      } 
    })
   }
 
@@ -435,35 +400,29 @@ if(fooditem.length ===1){
 
 const [weightError, setWeightError] = useState(null);
 const [weightprompt, setWeightPrompt] = useState(false);
+
+//Submit weight of the date provided at least one meal data already exists
 const submitWeightHandler = (e)=>{
   e.preventDefault();
 
-  if(mealsexist){
-
-
-
+  if(mealsexist)
+  {
   const addWeight = {"weight" : weight}
-  console.log(addWeight);
   setWeightPrompt(false);
-
-  
   axios.patch(`http://52.4.202.130:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken
   }} )
-    .then(res => {
-    console.log(res);
+    .then(res => 
+      {
     setDailyWeight(parseInt(weight,10));
     setWeight(0);
-///////////////////////////////////
-setUpdateGraph(!updateGraph);
-////////////////////////////////////////
+    setUpdateGraph(!updateGraph);
    })
    .catch(error => {
-      
     let message = error;
-    if(!message.response){
-      console.log('Error: Can not connect to network');
+    if(!message.response) 
+    {
      setWeightError('Error: Connection refused');
     }
     else{
@@ -484,39 +443,29 @@ const weightErrorWarningHandler=(e)=>{
   setWeightError(null);
 }
 
-
 const submitErrorHandler =(e)=>{
   e.preventDefault();
   setError(null);
 }
-
-
-
 
 const promptHandler =(e)=>{
   e.preventDefault();
   setEmptySubmit(!emptysubmit);
 }
 
-/*
-const editPromptHandler = (e)=>{
-  e.preventDefault();
-  setEmptyEdit(!emptyedit);
-}
-*/
 const weightPromptHandler = (e)=>{
   e.preventDefault();
   setWeightPrompt(!weightprompt);
 }
 
-
+const mealsErrorHandler = (e)=>{
+  e.preventDefault();
+  setMealsErrors(null);
+  getMeals();
+}
 
     return (
         <div  className="fooddiv">  
-
-
-
-
          <div className="leftside">
            {!error?
            <div>
@@ -538,22 +487,15 @@ const weightPromptHandler = (e)=>{
         <div><button onClick={promptHandler}>OK</button></div>
         </div>}
         </div>:<div><div className="mealsuberror">{error}<button name='okbutton' onClick={submitErrorHandler}>Ok</button></div></div>}
-
-
-
-
       <SearchFoods/>
       </div>
-
-        <div className="meals" >
+      <div className="meals" >
             <h1>{dateChanged}</h1>
             <div className="totalcals">Total Daily Calories: {totalCalories}</div>
            <form>
-          {/*<label name="date">Date: </label>*/}
           <input className="inputdate" value={date} type='date' onChange={dateHandler} max ={maxdate}></input>
           <button onClick={datesubmitHandler} className="changeDate" >Change Date</button>
           </form>
-
        {!weightError?
        <div>
           <form>    
@@ -571,18 +513,16 @@ const weightPromptHandler = (e)=>{
  
            </form>
            </div>:<div className="weightError">{weightError} <div ><button name='okbutton' onClick={weightErrorWarningHandler}>Ok</button></div></div>}
-           
+                 
+          {!mealserrors?
+           <div>
             {mealsexist?
-               <div>{/*entryInfo.weight*/}  
+               <div>
        <div className="entrydiv" >
            {fooditem.map(item=>(
-    
- 
     <div className= "mealdetails" key={item._id} >
-
-        {!item.edit? <div name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number} Calories: {item.calories}</div> {item.food_description} </div>: 
-
-
+        {!item.edit? <div name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number}
+         Calories: {item.calories}</div> {item.food_description} </div>: 
 <div name="editdiv">
 <form name="editform">   
 <div>
@@ -600,29 +540,19 @@ const weightPromptHandler = (e)=>{
   <button  className="subedditbutton" onClick={(e)=>submitEditHandler(e, item)} >Submit</button>
   <button name="closebutton" onClick={(e) => foodEditHandler(e, item._id)}>Close</button>
 </form>
-</div>
-
-
-           }
+</div>}
           
-         { /* <button className="foodeditbutton" onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>*/}
-          <button className={!item.edit? "foodeditbutton" : "nodelete"} onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>
-
-           <button className={item.deletable? "deletefoodbutton" : "nodelete"} onClick={(e) => deleteFoodHandler(e, item)}>delete</button>
-   
-           </div> 
+  <button className={!item.edit? "foodeditbutton" : "nodelete"} onClick={(e) => foodEditHandler(e, item._id)}>{!item.edit? "edit" : "X"}</button>
+  <button className={item.deletable? "deletefoodbutton" : "nodelete"} onClick={(e) => deleteFoodHandler(e, item)}>delete</button>
+   </div> 
               )) }
            </div>  </div>
-           :<div></div>
-         
-           }
-</div>
-      
-
-
-          </div>
-
-    )
+           :<div></div>}
+         </div>
+         :<div><div name="mealserrors">{mealserrors}<div ><button onClick={mealsErrorHandler} name="okbutton">OK</button></div></div></div>}
+  </div>
+  </div>
+  )
 }
 
 export default Meals;

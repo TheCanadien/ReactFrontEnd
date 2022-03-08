@@ -9,27 +9,29 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
 
     const atoken = JSON.parse(localStorage.getItem('token'));
     let navigate = useNavigate();
-
+    const [weight, setWeight] = useState(null);
+    const [birthdate, setBirthdate] = useState(null);
+    const [height, setHeight] = useState(null);
+    const [priv, setPriv] = useState(true);
+    const [edit, setEdit] = useState(false);
     const [bdayexists, setBdayExists] = useState(false); 
     const [heightexists, setHeightExists] = useState(false);
     const [weightexists, setWeightExists] = useState(false);
-  const [userData1, setUserData1] = useState({});
-  const [error, setError] = useState(null);
-  const [submitError, setSubmitError] = useState(null);
+    const [error, setError] = useState(null);
+    const [submitError, setSubmitError] = useState(null);
 
- 
      useEffect(()=>{
       getStuff(); 
   
        },[]);
   
+       //Get user info 
          const getStuff = async () =>{
          await axios.get('http://52.4.202.130:3000/user', { headers:{
           "content-type": "application/json",
           "Authorization" : atoken
         }} )
           .then(res => {
-         //  console.log(res);
           setUserData(res.data);
           if(res.data.birthday !== undefined){
               setBdayExists(true);   
@@ -52,37 +54,28 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
          })
          .catch(error => {
              let message = error;
-             console.log(message);
-             if(!message.response){
-               console.log('Error: Can not connect to network');
+             if(!message.response)
+             {
               setError('Error: Connection refused');
              }  
-             else{ 
-             if(message.response !== undefined && message.response.data === 'Access Denied'){
+             else
+             { 
+             if(message.response !== undefined && message.response.data === 'Access Denied')
+             {
               navigate('/');
              }
              else{
                setError(message.response.status + " " +  message.response.statusText);
              }
-
-
-
              }
          })
       
       };
      
-    
-
-    const [weight, setWeight] = useState(null);
-    const [birthdate, setBirthdate] = useState(null);
-    const [height, setHeight] = useState(null);
-    const [priv, setPriv] = useState(true);
-    const [edit, setEdit] = useState(false);
-
+    //Submit user profile data  
     const submitHandler = (e)=>{
       e.preventDefault();
-
+       let userData1 = {};
 
        if(weight !== null){
          userData1['weight'] = weight;
@@ -97,22 +90,18 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
        setHeightExists(true);
        }
        userData1['public'] = priv;
-      
-       console.log(userData1);
-
         axios.patch('http://52.4.202.130:3000/user', userData1, { headers:{
         "content-type": "application/json",
         "Authorization" : atoken
       }} )
         .then(res => {
-         console.log(res.data);
      //   setUserData1(res.data);
         setUserData(res.data);
        })
        .catch(error => {
         let message = error;
-        if(!message.response){
-          console.log('Error: Can not connect to network');
+        if(!message.response)
+        {
          setSubmitError('Error: Connection refused');
         }
         else{
@@ -122,12 +111,11 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
           else{    
          setSubmitError(message.response.status + " " + message.response.statusText);
           }
-        }  
-        
+        }      
        })
         setEdit(false);
      }
-////////////////////////////////////////////////////////
+
 const birthdateHandler = (e)=>{
     console.log(birthdate);
     setBirthdate(e.target.value);
@@ -155,12 +143,6 @@ localStorage.removeItem('token');
 navigate('/');
 }
 
-const closeErrorHandler =(e)=>{
-  e.preventDefault();
-  setError(null);
-  getStuff();
-}
-
 const userInfoErrorHandler =(e)=>{
   e.preventDefault();
   setError(null);
@@ -172,11 +154,7 @@ const editUserInfoErrorHandler =(e)=>{
   setSubmitError(null);
 }
 
-
 return(
-
-
-
 
 <div className="editText">
 
@@ -203,9 +181,6 @@ return(
 </div>
 </div>:<div><div name="infoErrorDiv">{error}<div><button onClick={userInfoErrorHandler}name="okbutton">OK</button></div></div></div>}
 </div>:<div><div name="submitError">{submitError}<div><button onClick={editUserInfoErrorHandler}name="okbutton">OK</button></div></div></div>}
-
-
-
 
 <div>
 <form className = {edit? "editVisible" : "invisible"} >
@@ -235,7 +210,6 @@ return(
     </div>
    </form>
 </div>
-
 
    </div>
 )

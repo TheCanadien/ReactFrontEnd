@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import '../Home.scss';
-//import { HashLink } from 'react-router-hash-link';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
@@ -11,49 +10,35 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
  let navigate = useNavigate();
  const [error, setError] = useState(null);
 
-
+ //Log user in
   const submitHandler = (e) =>{
   e.preventDefault();
-  console.log(userName);
     setError(null);
-  ///////////////////////////////////////////////////////
-
-
     const userLogin = {
      "name" : name,
      "password" : password,
      };
-     
-   // console.log(userLogin);
+  
        axios.post('http://52.4.202.130:3000/api/user/login', JSON.stringify(userLogin),{ headers:{
          "content-type": "application/json",
        }}
 
        )
          .then(res => {
-           console.log('This is header');
-          console.log(res.headers);
-          console.log('This is the body');
-          console.log(res);
           localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
           setUserName(name);
           setPassword('');
           setName(''); 
-       
           navigate(`/account/${name}`);
-
-          
         })
         .catch(error => {
           let message = error;
-          if(!message.response){
-            console.log('Error: Can not connect to network');
+          if(!message.response)
+          {
            setError('Error: Connection refused');
           }  
-          else{
-          console.log(error.response);
-          console.log(error.response);
-          (console.log(error.response.data));
+          else
+          {
           if(message.response.status === 400){
           setError(message.response.data.replaceAll('"', ''));
           }
@@ -62,8 +47,6 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
           }
         }
         })
-
-    
   }
 
 const closeWarningHandler =(e)=>{
@@ -71,26 +54,18 @@ const closeWarningHandler =(e)=>{
   setError(null);
 }
 
-
-
   const makeVisible= (e) =>{
     setVisible(!isVisible);
-
     e.preventDefault();
 }
 
 const userHandler = (e)=>{
-
-  setName(e.target.value);
   console.log(e.target.value);
 }
 
 const passHandler = (e)=>{
-  console.log(e.target.value);
   setPassword(e.target.value);
 }
-
-
 
     return(
         <div>

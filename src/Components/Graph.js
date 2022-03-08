@@ -3,7 +3,6 @@ import {Line} from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
 import 'chartjs-adapter-date-fns';
-//import { setDate } from 'date-fns';
 import '../Graph.scss';
 
 
@@ -13,24 +12,29 @@ const Graph = ({userData, date, updateGraph}) =>{
     const [currentdate, setCurrentDate] = useState(null);
     const [previousdate, setPreviousDate] = useState(null);
     const [error, setError] = useState(null);
+    const [weightdata, setWeightData] = useState([]);
+    const [caloriedata, setCalorieData] = useState([]);
 
 
+
+    //Settiing time interval to current date through 90 days prior
+    //Using resulting data to populate graphs
     useEffect(()=>{
     
-
-
       setCurrentDate(date);
       const tempdate = new Date(Date.now());
-      tempdate.setDate(-60);
+     let difference = tempdate.getDate()-90;
+     const tempdate2 = new Date(Date.now());
+     tempdate.setDate(1);
+     tempdate.setDate(difference);
       setPreviousDate(createDateString(tempdate));
-
       getMeals();
     
 
     },[userData, updateGraph]);
 
  
-
+    //Formatting date string
     const createDateString = (dateValue) =>{
         
         let date =  new Date(Date.now()); 
@@ -51,21 +55,7 @@ const Graph = ({userData, date, updateGraph}) =>{
     }
 
 
-
-    //  console.log(currentdate);
-     // console.log(previousdate);
-
-
-
-
-
-
-
-    const [weightdata, setWeightData] = useState([]);
-    const [caloriedata, setCalorieData] = useState([]);
-
-
-
+//Retrieving weights and total calories calories over time interval
     const getMeals = async () =>{
 
        if(previousdate !== null && currentdate !== null && userData.username !== undefined){
@@ -75,8 +65,6 @@ const Graph = ({userData, date, updateGraph}) =>{
         "Authorization" : atoken
       }} )
         .then(res => {
-      //    console.log(res);
-     
         const mealdata = res.data;
         let weights = [];
         let calories = [];
@@ -93,18 +81,16 @@ const Graph = ({userData, date, updateGraph}) =>{
         setCalorieData(calories);        
       }
         })
-        .catch(error=>{
-    
-          console.log(error.response);
+        .catch(error=>
+          {
           let message = error;
-          if(!message.response){
-            console.log('Error: Can not connect to network');
+          if(!message.response)
+          {
            setError('Error: Connection refused');
           }
           else{
            setError(message.response.status + " " + message.response.statusText);
           }  
-         console.log(error);
         });
       }
 
@@ -116,19 +102,6 @@ const Graph = ({userData, date, updateGraph}) =>{
       setError(null);
       getMeals();
     }
-
-
-   const dateHandler = (e) =>{
-    console.log(e.target.value);
-    setCurrentDate(e.target.value);
-
-   }
-
-   const datesubmitHandler = (e) =>{
-      e.preventDefault();
-      console.log(e.target.value);
-      console.log(e.target.value);
-   }
 
    
    const weightstate = {
@@ -164,16 +137,6 @@ const Graph = ({userData, date, updateGraph}) =>{
 
     return(
         <div>
- {          
-<div>
-       {/*}
-      <input className="graphdate" type='date' onChange={dateHandler}></input>
-          <input value={currentdate} className="graphdate2" type='date' onChange={dateHandler}></input>
- <button onClick={datesubmitHandler} className="changegraphdate" >Change Date</button>*/}
-
-
-</div>
- }
 
 {!error?
 <div>
@@ -223,21 +186,12 @@ const Graph = ({userData, date, updateGraph}) =>{
       </div>
       </div>
       </div>:
-      <div><div className="grapherror">{error}<div><div><button onClick={closeErrorHandler}name='okbutton' >Ok</button></div>
-
-
-
+      <div>
+        <div className="grapherror">{error}<div><div><button onClick={closeErrorHandler}name='okbutton' >Ok</button></div>
       </div>
       </div></div>}
 
-
-
-
-
-
-      
-      </div>
-
+        </div>
 
     )
 }

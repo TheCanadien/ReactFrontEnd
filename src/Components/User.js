@@ -1,15 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import UserInfo from './UserInfo';
 import Meals from './Meals';
 import '../User.scss';
 
+const User = () =>
+{
 
-
-
-const User = () =>{
-
-  
-///////////////////////////////////////////////////////////////////////
 const createDateString = () =>{
     const today = new Date(Date.now());
     let num = today.getMonth() + 1;
@@ -24,14 +20,11 @@ const createDateString = () =>{
     }
     return year + "-" + month + "-" + adate;
 };
-///////////////////////////////////////////////
+
 const [userData, setUserData] = useState({});
 const todaysdate = createDateString();
 const [date, setDate] = useState(todaysdate);
 const [updateGraph, setUpdateGraph] = useState(false);
-
-//////////////////////////////////////////////////////////////////////////////
-
 
     return (
         <div className="userpage">
@@ -41,9 +34,6 @@ const [updateGraph, setUpdateGraph] = useState(false);
          updateGraph= {updateGraph}
        />
       </div>
-     
-
-
        <div>
         <Meals userData={userData} setUserData={setUserData}  date={date} setDate={setDate} 
           updateGraph={updateGraph} setUpdateGraph={setUpdateGraph}
