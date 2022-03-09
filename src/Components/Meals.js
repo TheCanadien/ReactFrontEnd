@@ -519,8 +519,7 @@ const mealsErrorHandler = (e)=>{
        <div className="entrydiv" >
            {fooditem.map(item=>(
     <div className= "mealdetails" key={item._id} >
-        {!item.edit? <div name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number}  
-         Calories: {item.calories}</div> {item.food_description} </div>: 
+        {!item.edit? <div name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number}  Calories: {item.calories}</div> {item.food_description} </div>: 
 <div name="editdiv">
 <form name="editform">   
 <div>
