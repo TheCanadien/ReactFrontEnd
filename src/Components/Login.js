@@ -60,7 +60,7 @@ const closeWarningHandler =(e)=>{
 }
 
 const userHandler = (e)=>{
-  console.log(e.target.value);
+  setName(e.target.value);
 }
 
 const passHandler = (e)=>{
