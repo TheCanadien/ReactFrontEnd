@@ -44,8 +44,6 @@ const getMeals = async () =>
 
     console.log(res);
     if(res.data.length === 0){
-       // console.log('nada');
-    //    console.log(res.data);
         setMealsExist(false);
         setDailyWeight(0);
         setWeight(0);
@@ -521,7 +519,7 @@ const mealsErrorHandler = (e)=>{
        <div className="entrydiv" >
            {fooditem.map(item=>(
     <div className= "mealdetails" key={item._id} >
-        {!item.edit? <div name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number}
+        {!item.edit? <div name="mealdata"><div name="fooddescal">Meal Number: {item.meal_number}  
          Calories: {item.calories}</div> {item.food_description} </div>: 
 <div name="editdiv">
 <form name="editform">   
