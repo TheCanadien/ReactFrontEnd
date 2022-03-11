@@ -25,6 +25,7 @@ const userLogin = {
       "content-type": "application/json",
     }})
      .then(res => {
+      setVisible(!isVisible);
     })
     .catch(error => {
       let message = error;
