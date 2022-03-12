@@ -25,7 +25,7 @@ const searchFoodsHandler = (e)=>
     setError(null);
     if(searchFood !== '')
     {
-  axios.get(`http://52.4.202.130:8080/api/foods/${searchFood}/`)
+  axios.get(`http://52.4.202.130/api/foods/${searchFood}/`)
     .then(res => {
       setFoundFoods(res.data);
    })
