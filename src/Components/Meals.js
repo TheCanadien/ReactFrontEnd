@@ -16,10 +16,10 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
    const [dailyWeight, setDailyWeight] = useState(0);
    const [totalCalories, setTotalCalories] = useState(0);
    const [emptyedit, setEmptyEdit] = useState(false);
-   const [maxdate, setMaxDate] = useState(0);
+   const [maxdate, setMaxDate] = useState(date);
    const [error, setError] = useState(null);
    const [mealserrors, setMealsErrors] = useState(null);
-
+  const [dateselected, setDateSelected] = useState(date);
 
 
 
@@ -27,22 +27,20 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
    //Default get meal data for current date
     useEffect(()=>
     {
-     if(userData.username !== undefined){
-       setMaxDate(date);
+     if(userData.username !== undefined){     
       getMeals();
     }
           },[userData, date]);
 //
 const getMeals = async () =>
 {
-
-    await axios.get(`http://52.4.202.130:3000/entry/${date}/${userData.username}`,{ headers:{    
+    await axios.get(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken
  }} )
    .then(res => {
 
-    console.log(res);
+   // console.log(res);
     if(res.data.length === 0){
         setMealsExist(false);
         setDailyWeight(0);
@@ -97,31 +95,28 @@ const getMeals = async () =>
 //Retrieve meal data for new date
       const datesubmitHandler =(e) =>{
         e.preventDefault();
-        setDateChanged(date);
+        setDate(dateChanged);
         getMeals();
     }
     
     const dateHandler = (e)=>
     {
-      setDate(e.target.value);
+      setDateChanged(e.target.value)
   }
 
 
 const [calories, setCalories] = useState(0);
 const inputCaloriesHandler =(e)=>{
- console.log(e.target.value);
   setCalories(e.target.value);
 }
 
 const [weight, setWeight]  = useState(0);
  const inputWeightHandler = (e) =>{
-   console.log(e.target.value);
    setWeight(e.target.value);
  }
 
 const [foodDescription, setFoodDescription] = useState('');
 const inputFoodHandler = (e) =>{
- console.log(e.target.value);
  setFoodDescription(e.target.value);
 }
 
@@ -488,10 +483,10 @@ const mealsErrorHandler = (e)=>{
       <SearchFoods/>
       </div>
       <div className="meals" >
-            <h1>{dateChanged}</h1>
+            <h1>{date}</h1>
             <div className="totalcals">Total Daily Calories: {totalCalories}</div>
            <form>
-          <input className="inputdate" value={date} type='date' onChange={dateHandler} max ={maxdate}></input>
+          <input className="inputdate" value={dateChanged} type='date' onChange={dateHandler} max ={maxdate}></input>
           <button onClick={datesubmitHandler} className="changeDate" >Change Date</button>
           </form>
        {!weightError?
