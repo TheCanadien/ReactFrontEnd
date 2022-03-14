@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import '../Home.scss';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+axios.defaults.withCredentials = true;
 
 const Login = ({isVisible, setVisible, userName, setUserName}) =>{
 
@@ -21,7 +22,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
   
        axios.post('http://52.4.202.130:3000/api/user/login', JSON.stringify(userLogin),{ headers:{
          "content-type": "application/json",
-         "credentials": 'include',
+         "withCredentials": true,
        }}
 
        )
