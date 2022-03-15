@@ -4,7 +4,7 @@ import Chart from 'chart.js/auto';
 import axios from 'axios';
 import 'chartjs-adapter-date-fns';
 import '../Graph.scss';
-
+axios.defaults.withCredentials = true;
 
 const Graph = ({userData, date, updateGraph}) =>{
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../Meals.scss'
 import SearchFoods from './SearchFoods';
 import {useNavigate} from 'react-router-dom';
-
+axios.defaults.withCredentials = true;
 
 const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>
 {

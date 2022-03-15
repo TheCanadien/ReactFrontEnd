@@ -3,7 +3,7 @@ import React, {useEffect,useState} from 'react';
 import Login from './Login';
 import Register from './Register';
 import {useNavigate} from 'react-router-dom';
-
+axios.defaults.withCredentials = true;
 const Home = ({isVisible, setVisible, userName, setUserName}) =>{
 
     let navigate = useNavigate();

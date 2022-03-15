@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../User.scss';
 import Graph from './Graph';
 import {useNavigate} from 'react-router-dom';
-
+axios.defaults.withCredentials = true;
 
 const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
 
