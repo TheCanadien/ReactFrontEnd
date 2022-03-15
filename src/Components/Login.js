@@ -21,6 +21,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
   
        axios.post('http://52.4.202.130:3000/api/user/login', JSON.stringify(userLogin),{ headers:{
          "content-type": "application/json",
+         'withCredentials': true, 
        }}
 
        )
