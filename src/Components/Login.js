@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import '../Home.scss';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-//axios.defaults.withCredentials = true;
 
 const Login = ({isVisible, setVisible, userName, setUserName}) =>{
 
@@ -50,6 +49,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
         })
   }
 
+console.log('test');
 const closeWarningHandler =(e)=>{
   e.preventDefault();
   setError(null);
