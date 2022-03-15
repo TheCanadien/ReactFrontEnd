@@ -26,8 +26,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
      };
   
        axios.post('http://52.4.202.130:3000/api/user/login', JSON.stringify(userLogin),{ headers:{
-         "content-type": "application/json",
-         'withCredentials': true, 
+         "content-type": "application/json", 
        }}
 
        )
@@ -36,7 +35,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
           setUserName(name);
           setPassword('');
           setName(''); 
-//          navigate(`/account/${name}`);
+          navigate(`/account/${name}`);
         })
         .catch(error => {
           let message = error;

@@ -37,7 +37,6 @@ const getMeals = async () =>
     await axios.get(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken,
-   'withCredentials': true,
  }} )
    .then(res => {
 
