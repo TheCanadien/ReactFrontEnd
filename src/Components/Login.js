@@ -36,7 +36,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
           setUserName(name);
           setPassword('');
           setName(''); 
-          navigate(`/account/${name}`);
+//          navigate(`/account/${name}`);
         })
         .catch(error => {
           let message = error;
