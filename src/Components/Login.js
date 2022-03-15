@@ -20,7 +20,7 @@ const Login = ({isVisible, setVisible, userName, setUserName}) =>{
      "password" : password,
      };
   
-       axios.post('http://52.4.202.130:3000/api/user/login', JSON.stringify(userLogin),{ headers:{
+       axios.post('http://www.mealstracker.com:3000/api/user/login', JSON.stringify(userLogin),{ headers:{
          "content-type": "application/json",
        }}
 
