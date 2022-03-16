@@ -38,9 +38,12 @@ const getMeals = async () =>
    "Authorization" : atoken,
  }, withCredentials: true} )
    .then(res => {
-
+    if(res.data.accesstoken !== null)
+    {
+    localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+    }
    // console.log(res);
-    if(res.data.length === 0){
+   else if(res.data.length === 0){
         setMealsExist(false);
         setDailyWeight(0);
         setWeight(0);
