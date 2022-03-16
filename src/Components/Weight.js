@@ -13,7 +13,7 @@ const Weight = () =>{
         setWeightPrompt(false);
       
         
-        axios.patch(`http://52.4.202.130:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
+        axios.patch(`http://www.mealstracker.com:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
           "content-type": "application/json",
           "Authorization" : atoken,
         }, withCredentials: true} )

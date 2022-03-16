@@ -27,7 +27,7 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
   
        //Get user info 
          const getStuff = async () =>{
-         await axios.get('http://52.4.202.130:3000/user', { headers:{
+         await axios.get('http://www.mealstracker.com:3000/user', { headers:{
           "content-type": "application/json",
           "Authorization" : atoken,
         },withCredentials: true} )
@@ -90,7 +90,7 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
        setHeightExists(true);
        }
        userData1['public'] = priv;
-        axios.patch('http://52.4.202.130:3000/user', userData1, { headers:{
+        axios.patch('http://www.mealstracker.com:3000/user', userData1, { headers:{
         "content-type": "application/json",
         "Authorization" : atoken
       }} )

@@ -33,7 +33,7 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
 //
 const getMeals = async () =>
 {
-    await axios.get(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
+    await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken,
  }, withCredentials: true} )
@@ -143,7 +143,7 @@ setEmptySubmit(false);
 //If first meal for the given date, post to database
   if(!mealsexist)
   {
-  axios.post('http://52.4.202.130:3000/entry/', addmeal, { headers:{
+  axios.post('http://www.mealstracker.com:3000/entry/', addmeal, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken,
   },withCredentials:true} )
@@ -180,7 +180,7 @@ setUpdateGraph(!updateGraph);
     delete addmeal.date;
     const nextmealnumber = fooditem.length + 1;
     addmeal.food_item[0].meal_number = nextmealnumber;
-    axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}`, addmeal, { headers:{
+    axios.patch(`http://www.mealstracker.com:3000/update/${dateChanged}/${userData.username}`, addmeal, { headers:{
         "content-type": "application/json",
         "Authorization" : atoken,
       },withCredentials:true} )
@@ -269,7 +269,7 @@ const updated = {
  
 }
 
- axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
+ axios.patch(`http://www.mealstracker.com:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
   "content-type": "application/json",
   "Authorization" : atoken,
 }, withCredentials: true} )
@@ -319,7 +319,7 @@ const found = fooditem.find(items => items._id === item._id)
   reducecals = found.calories;
 
 if(fooditem.length >1){
-axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"reducecals": reducecals}, { headers:{
+axios.patch(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"reducecals": reducecals}, { headers:{
   "content-type": "application/json",
   "Authorization" : atoken,
 }, withCredentials: true} )
@@ -356,7 +356,7 @@ axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/
 }
 //Delete entire object for date if only one meal is left
 if(fooditem.length ===1){
-  axios.delete(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`, { headers:{
+  axios.delete(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken,
   }, withCredentials: true} )
@@ -401,7 +401,7 @@ const submitWeightHandler = (e)=>{
   {
   const addWeight = {"weight" : weight}
   setWeightPrompt(false);
-  axios.patch(`http://52.4.202.130:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
+  axios.patch(`http://www.mealstracker.com:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
     "content-type": "application/json",
     "Authorization" : atoken,
   }, withCredentials: true} )
