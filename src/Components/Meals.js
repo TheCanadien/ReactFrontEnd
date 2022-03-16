@@ -3,7 +3,6 @@ import axios from 'axios';
 import '../Meals.scss'
 import SearchFoods from './SearchFoods';
 import {useNavigate} from 'react-router-dom';
-axios.defaults.withCredentials = true;
 
 const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>
 {
@@ -37,7 +36,7 @@ const getMeals = async () =>
     await axios.get(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken,
- }} )
+ }, withCredentials: true} )
    .then(res => {
 
    // console.log(res);
@@ -146,8 +145,8 @@ setEmptySubmit(false);
   {
   axios.post('http://52.4.202.130:3000/entry/', addmeal, { headers:{
     "content-type": "application/json",
-    "Authorization" : atoken
-  }} )
+    "Authorization" : atoken,
+  },withCredentials:true} )
     .then(res =>
        {
     setMealsExist(true);
@@ -183,8 +182,8 @@ setUpdateGraph(!updateGraph);
     addmeal.food_item[0].meal_number = nextmealnumber;
     axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}`, addmeal, { headers:{
         "content-type": "application/json",
-        "Authorization" : atoken
-      }} )
+        "Authorization" : atoken,
+      },withCredentials:true} )
         .then(res => {
         const fooddata =  res.data.food_item[nextmealnumber-1];
         fooddata.edit = false;
@@ -272,8 +271,8 @@ const updated = {
 
  axios.patch(`http://52.4.202.130:3000/update/${dateChanged}/${userData.username}/${item.meal_number}`, updated , { headers:{
   "content-type": "application/json",
-  "Authorization" : atoken
-}} )
+  "Authorization" : atoken,
+}, withCredentials: true} )
   .then(res => {
      setFoodItem(fooditem.map(items=> {
       if(items._id === item._id){
@@ -322,8 +321,8 @@ const found = fooditem.find(items => items._id === item._id)
 if(fooditem.length >1){
 axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/${item.meal_number}`, {"reducecals": reducecals}, { headers:{
   "content-type": "application/json",
-  "Authorization" : atoken
-}} )
+  "Authorization" : atoken,
+}, withCredentials: true} )
   .then(res => {
    let array = fooditem.map((items, index)=>{
     if(index === fooditem.length-2){
@@ -359,8 +358,8 @@ axios.patch(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}/
 if(fooditem.length ===1){
   axios.delete(`http://52.4.202.130:3000/entry/${dateChanged}/${userData.username}`, { headers:{
     "content-type": "application/json",
-    "Authorization" : atoken
-  }} )
+    "Authorization" : atoken,
+  }, withCredentials: true} )
     .then(res => {
      let array = fooditem;
      array.pop();
@@ -404,8 +403,8 @@ const submitWeightHandler = (e)=>{
   setWeightPrompt(false);
   axios.patch(`http://52.4.202.130:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
     "content-type": "application/json",
-    "Authorization" : atoken
-  }} )
+    "Authorization" : atoken,
+  }, withCredentials: true} )
     .then(res => 
       {
     setDailyWeight(parseInt(weight,10));

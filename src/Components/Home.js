@@ -3,7 +3,7 @@ import React, {useEffect,useState} from 'react';
 import Login from './Login';
 import Register from './Register';
 import {useNavigate} from 'react-router-dom';
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 const Home = ({isVisible, setVisible, userName, setUserName}) =>{
 
     let navigate = useNavigate();
@@ -25,7 +25,7 @@ else{
  axios.get('http://52.4.202.130:3000/entry/', { headers:{    
     "content-type": "application/json",
     "Authorization" : atoken
-  }} )
+  }, withCredentials: true} )
     .then(res => { 
      console.log(res.data);
      const aName = res.data;

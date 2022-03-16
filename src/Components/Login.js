@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../Home.scss';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 
 
 

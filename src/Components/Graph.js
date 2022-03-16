@@ -4,7 +4,7 @@ import Chart from 'chart.js/auto';
 import axios from 'axios';
 import 'chartjs-adapter-date-fns';
 import '../Graph.scss';
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 
 const Graph = ({userData, date, updateGraph}) =>{
 
@@ -62,8 +62,8 @@ const Graph = ({userData, date, updateGraph}) =>{
 
          await axios.get(`http://52.4.202.130:3000/entry/${previousdate}/${currentdate}/${userData.username}`,{ headers:{    
         "content-type": "application/json",
-        "Authorization" : atoken
-      }} )
+        "Authorization" : atoken,
+      }, withCredentials: true} )
         .then(res => {
         const mealdata = res.data;
         let weights = [];

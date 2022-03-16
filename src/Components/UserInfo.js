@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../User.scss';
 import Graph from './Graph';
 import {useNavigate} from 'react-router-dom';
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 
 const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
 
@@ -29,8 +29,8 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
          const getStuff = async () =>{
          await axios.get('http://52.4.202.130:3000/user', { headers:{
           "content-type": "application/json",
-          "Authorization" : atoken
-        }} )
+          "Authorization" : atoken,
+        },withCredentials: true} )
           .then(res => {
           setUserData(res.data);
           if(res.data.birthday !== undefined){

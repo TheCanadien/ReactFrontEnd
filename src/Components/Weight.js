@@ -15,8 +15,8 @@ const Weight = () =>{
         
         axios.patch(`http://52.4.202.130:3000/user/${dateChanged}/${userData.username}`, addWeight, { headers:{
           "content-type": "application/json",
-          "Authorization" : atoken
-        }} )
+          "Authorization" : atoken,
+        }, withCredentials: true} )
           .then(res => {
           console.log(res);
           setDailyWeight(weight);
