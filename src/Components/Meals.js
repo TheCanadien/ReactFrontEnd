@@ -38,9 +38,10 @@ const getMeals = async () =>
    "Authorization" : atoken,
  }, withCredentials: true} )
    .then(res => {
-    if(res.data.accesstoken !== null)
+    if(res.data.accesstoken !== undefined)
     {
-    localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+     console.log(res.data.accesstoken);
+    //localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
     }
    // console.log(res);
    else if(res.data.length === 0){
