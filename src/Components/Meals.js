@@ -63,7 +63,7 @@ const getMeals = async () =>
    "Authorization" : atoken,
  }, withCredentials: true} )
    .then(res => {
-   // console.log(res);
+    console.log(res.data);
   if(res.data.length === 0){
         setMealsExist(false);
         setDailyWeight(0);
