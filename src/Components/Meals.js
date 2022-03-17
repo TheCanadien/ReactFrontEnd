@@ -55,7 +55,7 @@ const verifyToken = async () =>{
 //
 const getMeals = async () =>
 {
-verifyToken();
+//verifyToken();
 
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
@@ -160,7 +160,7 @@ const  [emptysubmit, setEmptySubmit] = useState(false);
 const submitHandler =(e) =>{
 
 
-  verifyToken();
+ // verifyToken();
 
 
 
@@ -279,7 +279,7 @@ const submitEditHandler = (e, item) =>
 {
 
 
-  verifyToken();
+  //verifyToken();
 
  e.preventDefault();
 
@@ -347,7 +347,7 @@ else{
 //Delete a meal from list
 const deleteFoodHandler = (e, item) =>{
 
-  verifyToken();
+  //verifyToken();
 
 
   console.log(item);
@@ -435,7 +435,7 @@ const [weightprompt, setWeightPrompt] = useState(false);
 //Submit weight of the date provided at least one meal data already exists
 const submitWeightHandler = (e)=>{
 
-  verifyToken();
+  //verifyToken();
   e.preventDefault();
 
   if(mealsexist)
