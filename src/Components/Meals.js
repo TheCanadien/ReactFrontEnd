@@ -56,7 +56,7 @@ const verifyToken = async () =>{
 //
 const getMeals = async () =>
 {
-verifyToken();
+//verifyToken();
 
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
