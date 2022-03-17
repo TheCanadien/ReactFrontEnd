@@ -32,9 +32,9 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
 
 
 const verifyToken = async () =>{
-   if(atoken === undefined){
-     navigate('/');
-   }
+   //if(atoken === undefined && atoken === null){
+    // navigate('/');
+   //}
 
   await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
     "content-type": "application/json",
@@ -47,7 +47,7 @@ const verifyToken = async () =>{
      }
 })
 .catch(error=>{
-  navigate('/')
+//  navigate('/')
 })
 };
 
