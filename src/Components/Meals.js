@@ -36,7 +36,7 @@ const verifyToken = async () =>{
     // navigate('/');
    //}
 
-  await axios.post(`http://www.mealstracker.com:3000/user`,{ headers:{    
+  await axios.get(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
     "content-type": "application/json",
     "Authorization" : atoken,
   }, withCredentials: true} )
@@ -58,7 +58,7 @@ console.log(error);
 //
 const getMeals = async () =>
 {
-//verifyToken();
+verifyToken();
 
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
@@ -98,7 +98,7 @@ const getMeals = async () =>
      }
   })
   .catch(error => {
-      console.log(error.response);
+      console.log(error);
     
       let message = error;
       if(!message.response){
