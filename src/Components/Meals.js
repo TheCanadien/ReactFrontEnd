@@ -49,6 +49,7 @@ const verifyToken = async () =>{
 })
 .catch(error=>{
 //  navigate('/')
+console.log(error);
 })
 };
 
