@@ -24,9 +24,37 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
       getStuff(); 
   
        },[]);
+
+
+       const verifyToken = async () =>{
+        if(atoken === undefined){
+          useNavigate('/');
+        }
+       await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
+         "content-type": "application/json",
+         "Authorization" : atoken,
+       }, withCredentials: true} )
+         .then(res => {
+          if(res.data.accesstoken !== undefined){
+           console.log(res.data.accesstoken);
+           localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+          }
+     })
+     .catch(error=>{
+       useNavigate('/')
+     })
+     };
+
+
+
+
   
        //Get user info 
          const getStuff = async () =>{
+
+          verifyToken();
+
+
          await axios.get('http://www.mealstracker.com:3000/user', { headers:{
           "content-type": "application/json",
           "Authorization" : atoken,
@@ -74,6 +102,9 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
      
     //Submit user profile data  
     const submitHandler = (e)=>{
+
+      verifyToken();
+
       e.preventDefault();
        let userData1 = {};
 

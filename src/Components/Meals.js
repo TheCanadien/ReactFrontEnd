@@ -30,21 +30,41 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
       getMeals();
     }
           },[userData, date]);
+
+
+const verifyToken = async () =>{
+   if(atoken === undefined){
+     useNavigate('/');
+   }
+  await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
+    "content-type": "application/json",
+    "Authorization" : atoken,
+  }, withCredentials: true} )
+    .then(res => {
+     if(res.data.accesstoken !== undefined){
+      console.log(res.data.accesstoken);
+      localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+     }
+})
+.catch(error=>{
+  useNavigate('/')
+})
+};
+
+
+
 //
 const getMeals = async () =>
 {
+verifyToken();
+
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken,
  }, withCredentials: true} )
    .then(res => {
-    if(res.data.accesstoken !== undefined)
-    {
-     console.log(res.data.accesstoken);
-    localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
-    }
    // console.log(res);
-   else if(res.data.length === 0){
+  if(res.data.length === 0){
         setMealsExist(false);
         setDailyWeight(0);
         setWeight(0);
@@ -139,6 +159,12 @@ const  [emptysubmit, setEmptySubmit] = useState(false);
 
 //Add meal data
 const submitHandler =(e) =>{
+
+
+  verifyToken();
+
+
+
   e.preventDefault();
 if(foodDescription !== '' && calories !== 0)
 {
@@ -180,6 +206,8 @@ setUpdateGraph(!updateGraph);
    })
   }
   else{
+
+
     //If one meal already exists in db for that date, patch to add another
     delete addmeal.date;
     const nextmealnumber = fooditem.length + 1;
@@ -250,6 +278,10 @@ const foodEditHandler = (e, itemid) =>
 //Edit meal data
 const submitEditHandler = (e, item) =>
 {
+
+
+  verifyToken();
+
  e.preventDefault();
 
 if(editFood !== '' && editCal !== 0 )
@@ -315,6 +347,10 @@ else{
 
 //Delete a meal from list
 const deleteFoodHandler = (e, item) =>{
+
+  verifyToken();
+
+
   console.log(item);
  e.preventDefault();
  let reducecals = 0;
@@ -399,6 +435,8 @@ const [weightprompt, setWeightPrompt] = useState(false);
 
 //Submit weight of the date provided at least one meal data already exists
 const submitWeightHandler = (e)=>{
+
+  verifyToken();
   e.preventDefault();
 
   if(mealsexist)

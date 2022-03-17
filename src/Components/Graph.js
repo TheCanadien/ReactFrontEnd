@@ -33,7 +33,32 @@ const Graph = ({userData, date, updateGraph}) =>{
 
     },[userData, updateGraph]);
 
- 
+    const verifyToken = async () =>{
+      if(atoken === undefined){
+        useNavigate('/');
+      }
+     await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
+       "content-type": "application/json",
+       "Authorization" : atoken,
+     }, withCredentials: true} )
+       .then(res => {
+        if(res.data.accesstoken !== undefined){
+         console.log(res.data.accesstoken);
+         localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+        }
+   })
+   .catch(error=>{
+     useNavigate('/')
+   })
+   };
+
+
+
+
+
+
+
+
     //Formatting date string
     const createDateString = (dateValue) =>{
         
@@ -57,6 +82,8 @@ const Graph = ({userData, date, updateGraph}) =>{
 
 //Retrieving weights and total calories calories over time interval
     const getMeals = async () =>{
+
+      verifyToken();
 
        if(previousdate !== null && currentdate !== null && userData.username !== undefined){
 
