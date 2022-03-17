@@ -28,7 +28,7 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
 
        const verifyToken = async () =>{
         if(atoken === undefined){
-          useNavigate('/');
+          navigate('/');
         }
        await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
          "content-type": "application/json",
@@ -41,7 +41,7 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
           }
      })
      .catch(error=>{
-       useNavigate('/')
+       navigate('/')
      })
      };
 
