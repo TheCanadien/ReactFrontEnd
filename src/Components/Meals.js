@@ -6,7 +6,6 @@ import {useNavigate} from 'react-router-dom';
 
 const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>
 {
-
   let navigate = useNavigate();
     const atoken = JSON.parse(localStorage.getItem('token'));
     const [fooditem, setFoodItem] = useState([]);
@@ -18,7 +17,7 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
    const [maxdate, setMaxDate] = useState(date);
    const [error, setError] = useState(null);
    const [mealserrors, setMealsErrors] = useState(null);
-  const [dateselected, setDateSelected] = useState(date);
+  //const [dateselected, setDateSelected] = useState(date);
 
 
 
@@ -34,7 +33,7 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
 
 const verifyToken = async () =>{
    if(atoken === undefined){
-     useNavigate('/');
+     navigate('/');
    }
   await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
     "content-type": "application/json",
@@ -47,7 +46,7 @@ const verifyToken = async () =>{
      }
 })
 .catch(error=>{
-  useNavigate('/')
+  navigate('/')
 })
 };
 

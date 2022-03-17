@@ -4,10 +4,12 @@ import Chart from 'chart.js/auto';
 import axios from 'axios';
 import 'chartjs-adapter-date-fns';
 import '../Graph.scss';
+import {useNavigate} from 'react-router-dom';
 //axios.defaults.withCredentials = true;
 
 const Graph = ({userData, date, updateGraph}) =>{
 
+  let navigate = useNavigate();
     const atoken = JSON.parse(localStorage.getItem('token'));
     const [currentdate, setCurrentDate] = useState(null);
     const [previousdate, setPreviousDate] = useState(null);
