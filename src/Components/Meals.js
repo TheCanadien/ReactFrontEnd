@@ -41,9 +41,10 @@ const verifyToken = async () =>{
     "Authorization" : atoken,
   }, withCredentials: true} )
     .then(res => {
-     if(res.data.accesstoken !== undefined){
-      console.log(res.data.accesstoken);
+     if(res.data.accesstoken !== undefined || res.data.accesstoken === null){
+      console.log("old token " + atoken);
       localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+      console.log('setting new token ' + localStorage.getItem('token'));
      }
 })
 .catch(error=>{
@@ -56,7 +57,7 @@ const verifyToken = async () =>{
 //
 const getMeals = async () =>
 {
-//verifyToken();
+verifyToken();
 
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
