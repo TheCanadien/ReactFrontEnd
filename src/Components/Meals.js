@@ -36,7 +36,7 @@ const verifyToken = async () =>{
     // navigate('/');
    //}
 
-  await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
+  await axios.post(`http://www.mealstracker.com:3000/user`,{ headers:{    
     "content-type": "application/json",
     "Authorization" : atoken,
   }, withCredentials: true} )
