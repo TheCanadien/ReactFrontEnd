@@ -7,7 +7,8 @@ import {useNavigate} from 'react-router-dom';
 const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>
 {
   let navigate = useNavigate();
-    const atoken = JSON.parse(localStorage.getItem('token'));
+    const [atoken, setAToken] = useState(JSON.parse(localStorage.getItem('token')));  
+//JSON.parse(localStorage.getItem('token'));
     const [fooditem, setFoodItem] = useState([]);
     const [mealsexist, setMealsExist] = useState(false);
     const [dateChanged, setDateChanged] = useState(date);
@@ -29,7 +30,7 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
       getMeals();
      verifyToken();
     }
-          },[userData, date]);
+          },[userData, date, atoken]);
 
 
 const verifyToken = () =>{
@@ -45,6 +46,8 @@ const verifyToken = () =>{
      if(res.data.accesstoken !== undefined || res.data.accesstoken === null){
       console.log("old token " + atoken);
       localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
+     setAToken(res.data.accesstoken);
+      //localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
       console.log('setting new token ' + localStorage.getItem('token'));
      }
 })
@@ -59,14 +62,14 @@ console.log(error);
 //
 const getMeals = async () =>
 {
-//verifyToken();
+verifyToken();
 
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
    "Authorization" : atoken,
  }, withCredentials: true} )
    .then(res => {
-    verifyToken();
+//    verifyToken();
     console.log(res.data);
   if(res.data.length === 0){
         setMealsExist(false);
