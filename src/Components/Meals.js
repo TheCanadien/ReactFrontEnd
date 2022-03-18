@@ -27,9 +27,8 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
     {
      if(userData.username !== undefined){     
       getMeals();
-//     verifyToken();
     }
-          },[userData, date, atoken]);
+          },[userData, date]);
 
 
 const verifyToken = () =>{
@@ -61,7 +60,9 @@ console.log(error);
 //
 const getMeals = async () =>
 {
-//verifyToken();
+
+verifyToken();
+verifyToken();
 
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
    "content-type": "application/json",
@@ -74,12 +75,6 @@ if(res.data.accesstoken !== undefined || res.data.accesstoken === null){
       localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
 
 }
-
-
-
-
-
-
 
 //    verifyToken();
     console.log(res.data);
