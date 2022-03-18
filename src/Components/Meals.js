@@ -31,12 +31,12 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
           },[userData, date]);
 
 
-const verifyToken = async () =>{
+const verifyToken = () =>{
    //if(atoken === undefined && atoken === null){
     // navigate('/');
    //}
 
-  await axios.get(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
+   axios.get(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
     "content-type": "application/json",
     "Authorization" : atoken,
   }, withCredentials: true} )
