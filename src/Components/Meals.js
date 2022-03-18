@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom';
 const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGraph})=>
 {
   let navigate = useNavigate();
-    var  atoken = JSON.parse(localStorage.getItem('token'));
+    const [atoken, setToken] = useState(JSON.parse(localStorage.getItem('token')));
     const [fooditem, setFoodItem] = useState([]);
     const [mealsexist, setMealsExist] = useState(false);
     const [dateChanged, setDateChanged] = useState(date);
@@ -46,7 +46,7 @@ const verifyToken = () =>{
       localStorage.setItem('token', JSON.stringify(res.data.accesstoken));     
       //localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
       console.log('setting new token ' + localStorage.getItem('token'));
-     return res.data.accesstoken;
+      setToken(res.data.accesstoken);     
      }
 })
 .catch(error=>{
@@ -63,10 +63,7 @@ console.log(error);
 const getMeals = async () =>
 {
 
-const temp = verifyToken();
-if(temp !==  null || temp !== undefined){
-atoken = temp;
-}
+await verifyToken();
 
 
 
