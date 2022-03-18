@@ -43,16 +43,18 @@ const verifyToken = () =>{
     .then(res => {
      if(res.data.accesstoken !== undefined || res.data.accesstoken === null){
       console.log("old token " + atoken);
-      localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
-     
+      localStorage.setItem('token', JSON.stringify(res.data.accesstoken));     
       //localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
       console.log('setting new token ' + localStorage.getItem('token'));
+     return res.data.accesstoken;
      }
 })
 .catch(error=>{
 //  navigate('/')
 console.log(error);
 })
+
+
 };
 
 
@@ -61,7 +63,11 @@ console.log(error);
 const getMeals = async () =>
 {
 
-await verifyToken();
+const temp = verifyToken();
+if(temp !==  null || temp !== undefined){
+atoken = temp;
+}
+
 
 
     await axios.get(`http://www.mealstracker.com:3000/entry/${dateChanged}/${userData.username}`,{ headers:{    
