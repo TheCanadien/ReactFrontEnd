@@ -72,13 +72,12 @@ await verifyToken();
  }, withCredentials: true} )
    .then(res => {
 
-/*
+
 if(res.data.accesstoken !== undefined || res.data.accesstoken === null){
       console.log("old token " + atoken);
       localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
 
 }
-*/
 //    verifyToken();
     console.log(res.data);
   if(res.data.length === 0){
