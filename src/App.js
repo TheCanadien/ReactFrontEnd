@@ -3,11 +3,38 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Components/Home'
 import User from './Components/User'
 import React, {useState} from 'react';
+import axios from 'axios';
 
 function App() {
 
   const [isVisible, setVisible] = useState(false);
   const [userName, setUserName] =useState('');
+
+
+  axios.interceptors.response.use((response)=>{
+   if(response.data.accesstoken !== undefined){
+    localStorage.setItem('token', JSON.stringify(res.data.accesstoken)); 
+   } 
+  return response;
+  },
+
+  (error)=>{
+  
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
 
