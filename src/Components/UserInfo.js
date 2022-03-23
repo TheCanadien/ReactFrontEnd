@@ -171,7 +171,7 @@ const editForm = ()=>{
 const signoutHandler=(e)=>{
   e.preventDefault();
 localStorage.removeItem('token');
-axios.post(`http://www.mealstracker.com/api/logout`, {'nothing': 'nothing'}, { headers:{
+axios.post(`http://www.mealstracker.com:3000/api/user/logout`, {'nothing': 'nothing'}, { headers:{
   "content-type": "application/json",
   "Authorization" : atoken
 }} )
