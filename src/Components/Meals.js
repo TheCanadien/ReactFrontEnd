@@ -21,7 +21,6 @@ const Meals = ({userData, setUserData, date, setDate, updateGraph, setUpdateGrap
 
 
 
-
    //Default get meal data for current date
     useEffect(()=>
     {
