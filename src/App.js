@@ -25,7 +25,7 @@ function App() {
   })
 
 */
-
+/*
 const verifyToken = () =>{
   //if(atoken === undefined && atoken === null){
    // navigate('/');
@@ -51,7 +51,7 @@ console.log(error);
 
 
 };
-
+*/
 
 
 axios.interceptors.response.use((response)=>{
