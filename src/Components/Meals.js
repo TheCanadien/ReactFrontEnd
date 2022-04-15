@@ -62,7 +62,7 @@ console.log(error);
 const getMeals = async () =>
 {
 
-await verifyToken();
+ verifyToken();
 
 
 
@@ -71,13 +71,14 @@ await verifyToken();
    "Authorization" : atoken,
  }, withCredentials: true} )
    .then(res => {
-
+/*
 
 if(res.data.accesstoken !== undefined || res.data.accesstoken === null){
       console.log("old token " + atoken);
       localStorage.setItem('token', JSON.stringify(res.data.accesstoken));
 
 }
+*/
 //    verifyToken();
     console.log(res.data);
   if(res.data.length === 0){
