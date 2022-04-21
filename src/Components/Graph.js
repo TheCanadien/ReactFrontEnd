@@ -39,7 +39,7 @@ const Graph = ({userData, date, updateGraph}) =>{
       if(atoken === undefined){
         navigate('/');
       }
-     await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
+     await axios.post(`https://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
        "content-type": "application/json",
        "Authorization" : atoken,
      }, withCredentials: true} )
@@ -89,7 +89,7 @@ const Graph = ({userData, date, updateGraph}) =>{
 
        if(previousdate !== null && currentdate !== null && userData.username !== undefined){
 
-         await axios.get(`http://www.mealstracker.com:3000/entry/${previousdate}/${currentdate}/${userData.username}`,{ headers:{    
+         await axios.get(`https://www.mealstracker.com:3000/entry/${previousdate}/${currentdate}/${userData.username}`,{ headers:{    
         "content-type": "application/json",
         "Authorization" : atoken,
       }, withCredentials: true} )

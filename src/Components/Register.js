@@ -21,7 +21,7 @@ const userLogin = {
 "email":  email,
 };
 
-    axios.post('http://www.mealstracker.com:3000/api/user/register', JSON.stringify(userLogin), { headers:{
+    axios.post('https://www.mealstracker.com:3000/api/user/register', JSON.stringify(userLogin), { headers:{
       "content-type": "application/json",
     }})
      .then(res => {

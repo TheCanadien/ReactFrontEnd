@@ -22,7 +22,7 @@ if(atoken=== null){
 }
 else{
 //Verify user credentials from database before routing to personal user page
- axios.get('http://www.mealstracker.com:3000/entry/', { headers:{    
+ axios.get('https://www.mealstracker.com:3000/entry/', { headers:{    
     "content-type": "application/json",
     "Authorization" : atoken
   }, withCredentials: true} )
