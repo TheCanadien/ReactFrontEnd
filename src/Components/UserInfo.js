@@ -30,7 +30,7 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
         if(atoken === undefined){
           navigate('/');
         }
-       await axios.post(`https://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
+       await axios.post(`http://www.mealstracker.com:3000/user/${userData.username}`,{ headers:{    
          "content-type": "application/json",
          "Authorization" : atoken,
        }, withCredentials: true} )
@@ -55,7 +55,7 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
          // verifyToken();
 
 
-         await axios.get('https://www.mealstracker.com:3000/user', { headers:{
+         await axios.get('http://www.mealstracker.com:3000/user', { headers:{
           "content-type": "application/json",
           "Authorization" : atoken,
         },withCredentials: true} )
@@ -121,7 +121,7 @@ const UserInfo =({userData, setUserData, date, setDate, updateGraph})=>{
        setHeightExists(true);
        }
        userData1['public'] = priv;
-        axios.patch('https://www.mealstracker.com:3000/user', userData1, { headers:{
+        axios.patch('http://www.mealstracker.com:3000/user', userData1, { headers:{
         "content-type": "application/json",
         "Authorization" : atoken
       }} )
@@ -171,7 +171,7 @@ const editForm = ()=>{
 const signoutHandler=(e)=>{
   e.preventDefault();
 localStorage.removeItem('token');
-axios.post(`https://www.mealstracker.com:3000/api/user/logout`, {'nothing': 'nothing'}, { headers:{
+axios.post(`http://www.mealstracker.com:3000/api/user/logout`, {'nothing': 'nothing'}, { headers:{
   "content-type": "application/json",
   "Authorization" : atoken
 }} )
